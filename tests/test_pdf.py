@@ -104,5 +104,80 @@ class PDFAnalysisTests(unittest.TestCase):
             self.assertEqual(json.loads(buffer.getvalue())["match_count"], 1)
 
 
+    def test_layout_fallback_recovers_spatial_name(self):
+        # Text stream order is ANA, SILVA, PAULA; visual order is ANA PAULA SILVA.
+        # This reproduces a class of false negatives in multi-column PDFs.
+        with TemporaryDirectory() as folder:
+            pdf = Path(folder) / "layout.pdf"
+            writer = PdfWriter()
+            page = writer.add_blank_page(width=612, height=792)
+            font = DictionaryObject({
+                NameObject("/Type"): NameObject("/Font"),
+                NameObject("/Subtype"): NameObject("/Type1"),
+                NameObject("/BaseFont"): NameObject("/Helvetica"),
+                NameObject("/Encoding"): NameObject("/WinAnsiEncoding"),
+            })
+            font_ref = writer._add_object(font)
+            page[NameObject("/Resources")] = DictionaryObject({
+                NameObject("/Font"): DictionaryObject({NameObject("/F1"): font_ref})
+            })
+            stream = DecodedStreamObject()
+            stream.set_data(
+                b"BT /F1 12 Tf 40 700 Td (ANA) Tj ET\n"
+                b"BT /F1 12 Tf 121 700 Td (SILVA) Tj ET\n"
+                b"BT /F1 12 Tf 72 700 Td (PAULA) Tj ET"
+            )
+            page[NameObject("/Contents")] = writer._add_object(stream)
+            with pdf.open("wb") as handle:
+                writer.write(handle)
+
+            report = analyze_pdf(pdf, "Ana Paula Silva")
+            self.assertEqual(report["match_count"], 1)
+            self.assertEqual(report["matches"][0]["page_number"], 1)
+            self.assertEqual(report["matches"][0]["extraction_mode"], "layout_fallback")
+            self.assertEqual(report["layout_fallback_pages"], [1])
+            self.assertEqual(report["result"], "name_mentioned_only")
+
+    def test_layout_rejects_name_reassembled_across_wide_columns(self):
+        # The same words are far apart on the page: not a trustworthy name.
+        with TemporaryDirectory() as folder:
+            pdf = Path(folder) / "columns.pdf"
+            writer = PdfWriter()
+            page = writer.add_blank_page(width=612, height=792)
+            font = DictionaryObject({
+                NameObject("/Type"): NameObject("/Font"),
+                NameObject("/Subtype"): NameObject("/Type1"),
+                NameObject("/BaseFont"): NameObject("/Helvetica"),
+                NameObject("/Encoding"): NameObject("/WinAnsiEncoding"),
+            })
+            font_ref = writer._add_object(font)
+            page[NameObject("/Resources")] = DictionaryObject({
+                NameObject("/Font"): DictionaryObject({NameObject("/F1"): font_ref})
+            })
+            stream = DecodedStreamObject()
+            stream.set_data(
+                b"BT /F1 12 Tf 40 700 Td (ANA) Tj ET\n"
+                b"BT /F1 12 Tf 490 700 Td (SILVA) Tj ET\n"
+                b"BT /F1 12 Tf 340 700 Td (PAULA) Tj ET"
+            )
+            page[NameObject("/Contents")] = writer._add_object(stream)
+            with pdf.open("wb") as handle:
+                writer.write(handle)
+            report = analyze_pdf(pdf, "Ana Paula Silva")
+            self.assertEqual(report["match_count"], 0)
+            self.assertEqual(report["result"], "no_name_match")
+            self.assertEqual(report["layout_fallback_pages"], [])
+            self.assertIn("descartados", " ".join(report["warnings"]))
+
+    def test_plain_match_keeps_default_extraction_mode(self):
+        with TemporaryDirectory() as folder:
+            pdf = Path(folder) / "simple.pdf"
+            make_pdf(pdf, ["ANA PAULA SILVA convocada."])
+            report = analyze_pdf(pdf, "Ana Paula Silva")
+            self.assertEqual(report["match_count"], 1)
+            self.assertEqual(report["matches"][0]["extraction_mode"], "plain")
+            self.assertEqual(report["layout_fallback_pages"], [])
+
+
 if __name__ == "__main__":
     unittest.main()
