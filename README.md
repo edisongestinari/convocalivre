@@ -1,8 +1,8 @@
-# ConvocaLivre (protótipo 0.1.0)
+# ConvocaLivre (protótipo 0.2.0)
 
-**Uma ferramenta aberta para encontrar indícios verificáveis de convocações e outros atos relacionados a nomes em textos extraídos de diários oficiais brasileiros.**
+**Uma ferramenta aberta para encontrar indícios verificáveis de convocações e outros atos relacionados a nomes em textos e PDFs pesquisáveis de diários oficiais brasileiros.**
 
-> ⚠️ Protótipo inicial. NÃO consulta automaticamente sites oficiais, NÃO lê PDF diretamente, NÃO envia alertas, NÃO comprova nomeação, nem substitui verificação humana. O arquivo de exemplo é inteiramente fictício.
+> ⚠️ Protótipo inicial. NÃO consulta automaticamente sites oficiais, NÃO envia alertas, NÃO comprova nomeação, nem substitui verificação humana. O arquivo de exemplo é inteiramente fictício. PDFs digitalizados sem texto ainda não são reconhecidos.
 
 ## Problema público
 
@@ -10,11 +10,11 @@ Pessoas aprovadas em concursos podem depender de publicações espalhadas por di
 
 ## Diferencial proposto
 
-- Pesquisa exata por nome completo, tolerante a acentos e variação de espaços.
+- Pesquisa exata por nome completo, tolerante a acentos e variação de espaços, em TXT UTF-8 ou PDF com texto pesquisável.
 - Distinção entre **nome mencionado** e **possível ato relacionado**; nenhuma conclusão jurídica automática.
 - Trecho de evidência, posições no documento e hash SHA-256 do texto analisado.
 - Análise **offline**: nomes não são transmitidos a serviços externos.
-- Saída JSON para integração futura com outras ferramentas cívicas.
+- Saída JSON para integração futura com outras ferramentas cívicas. Em PDFs, retorna página física (iniciando em 1), trecho, posições no texto extraído, hash dos bytes originais e aviso para páginas sem texto.
 
 ## Instalação (Python 3.10+)
 
@@ -30,6 +30,14 @@ convocalivre examples/publicacao_ficticia.txt --name "Maria de Sousa" --output r
 ```
 
 O URL do exemplo é deliberadamente inválido, para não aparentar uma publicação real.
+
+## PDF com texto pesquisável (0.2)
+
+Após instalar, analise um arquivo PDF local:
+
+    convocalivre meu_diario.pdf --name "Maria de Sousa" --source-url "https://example.invalid/diario.pdf" --date 2026-11-16 --output resultado.json
+
+A URL e a data são fornecidas pelo usuário e **não são verificadas**. A página indicada é a posição física da página no PDF, não necessariamente a página impressa no rodapé do diário. PDF digitalizado sem camada de texto não é pesquisado; **não há OCR**. A associação entre nome e palavra próxima é um indício heurístico, nunca a confirmação de nomeação. O hash prova identidade dos bytes do arquivo, não autenticidade. Detalhes: [docs/PDF.md](docs/PDF.md).
 
 ## Testes
 
