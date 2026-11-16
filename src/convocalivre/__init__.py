@@ -1,3 +1,3 @@
 """ConvocaLivre: evidence-first matching for public gazette text."""
 
-__version__ = "0.3.0"
+__version__ = "0.3.1"

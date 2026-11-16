@@ -136,6 +136,8 @@ class PDFAnalysisTests(unittest.TestCase):
             self.assertEqual(report["matches"][0]["page_number"], 1)
             self.assertEqual(report["matches"][0]["extraction_mode"], "layout_fallback")
             self.assertEqual(report["layout_fallback_pages"], [1])
+            self.assertEqual(report["table_context_pages"], [])
+            self.assertEqual(report["matches"][0]["act_type"], "indeterminado")
             self.assertEqual(report["result"], "name_mentioned_only")
 
     def test_layout_rejects_name_reassembled_across_wide_columns(self):
