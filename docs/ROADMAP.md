@@ -6,6 +6,8 @@
 - [x] Hash SHA-256 do texto analisado e saída JSON
 - [x] Testes unitários e CI no GitHub Actions
 - [x] Classificação heurística conservadora de convocação, nomeação, exclusão/desistência e resultado/homologação
+- [x] Inferência conservadora de atos em linhas de tabela com cabeçalho de edital na mesma coluna, com casos sintéticos adversariais
+- [ ] Retestar inferência de tabela 0.3.1 na publicação pública que motivou o diagnóstico
 - [x] Corpus rotulado com 39 exemplos sintéticos e relatório reprodutível de FP/FN por classe
 
 ## Antes de buscar usuários
