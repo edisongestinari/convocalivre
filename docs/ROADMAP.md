@@ -1,14 +1,17 @@
 # Roadmap verificável
 
-## Concluído no protótipo 0.2.1.0
+## Concluído até o protótipo 0.3.0
 - [x] Núcleo de busca determinística offline em TXT UTF-8
 - [x] Normalização de acentuação, correspondência de nome inteiro e trechos de contexto
 - [x] Hash SHA-256 do texto analisado e saída JSON
 - [x] Testes unitários e CI no GitHub Actions
+- [x] Classificação heurística conservadora de convocação, nomeação, exclusão/desistência e resultado/homologação
+- [x] Corpus rotulado com 39 exemplos sintéticos e relatório reprodutível de FP/FN por classe
 
 ## Antes de buscar usuários
-- [ ] Fazer avaliação com corpus de publicações públicas e documentos sintéticos, sem expor dados privados
-- [ ] Medir falsos positivos/negativos e documentar limitações
+- [ ] Fazer avaliação independente com publicações públicas e casos inéditos, sem expor dados privados
+- [x] Medir FP/FN em exemplos sintéticos de desenvolvimento, documentando limitações
+- [ ] Medir FP/FN em conjunto independente de documentos reais e layouts variados
 - [x] Adicionar análise offline de PDFs com texto extraível, páginas numeradas e SHA-256 dos bytes originais
 - [x] Criar testes sintéticos para PDF, páginas vazias e compatibilidade com TXT
 - [ ] Rever segurança, privacidade e licenças de todas as fontes
