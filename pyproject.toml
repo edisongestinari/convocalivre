@@ -14,7 +14,6 @@ keywords = ["civic-tech", "brasil", "diario-oficial", "open-data", "transparenci
 classifiers = [
   "Development Status :: 2 - Pre-Alpha",
   "Programming Language :: Python :: 3",
-  "License :: OSI Approved :: MIT License",
   "Topic :: Text Processing :: General",
 ]
 
