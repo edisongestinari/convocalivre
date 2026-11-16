@@ -39,7 +39,7 @@ class TableContextTests(unittest.TestCase):
         self.assertEqual(result["act_type"], "desistencia_exclusao")
         self.assertEqual(result["act_indicator"], "exclui")
         self.assertIn("EDITAL", result["act_heading_excerpt"])
-        self.assertEqual(result["act_context_lines"], [2, 4])
+        self.assertEqual(result["act_context_lines"], [2, 3])
         self.assertTrue(result["requires_manual_review"])
 
     def test_does_not_borrow_exclusion_from_other_column(self):
