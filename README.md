@@ -47,14 +47,19 @@ Cada nome localizado recebe um campo act_type com uma destas hipóteses:
 **convocacao**, **nomeacao**, **desistencia_exclusao**,
 **resultado_homologacao** ou **indeterminado**.
 
-O classificador exige indicador na mesma frase/linha, trata negações simples,
+Em TXT, o classificador usa indicadores na mesma frase/linha do nome. Em PDF
+(0.3.1), pode associar uma linha de tabela ao **edital numerado na mesma
+coluna**, se encontrar o cabeçalho, o cargo e duas evidências independentes.
+Ausência desse vínculo mantém a classe indeterminada. Trata negações simples,
 prioriza exclusões explícitas e se abstém quando há indicadores conflitantes.
 Todas as ocorrências exigem revisão humana. Ele **não certifica atos jurídicos**
 nem prova que a publicação é oficial. Campos antigos signal e matched_terms
 continuam presentes e podem divergir da categoria mais conservadora.
 
 O relatório inclui act_indicator, act_basis, requires_manual_review e
-act_type_counts (contagem de menções, não de atos). As páginas do PDF e os
+act_type_counts (contagem de menções, não de atos). No modo layout_fallback,
+a nova vinculação opcional de tabela registra evidências de coluna e
+cabeçalho (veja [docs/TABLE_CONTEXT.md](docs/TABLE_CONTEXT.md)). As páginas do PDF e os
 avisos de extração continuam disponíveis.
 
 **Benchmark com documentos de teste sintéticos:** na pasta do repositório,
