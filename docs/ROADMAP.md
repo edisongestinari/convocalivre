@@ -1,6 +1,6 @@
 # Roadmap verificável
 
-## Concluído no protótipo 0.1.0
+## Concluído no protótipo 0.2.0
 - [x] Núcleo de busca determinística offline em TXT UTF-8
 - [x] Normalização de acentuação, correspondência de nome inteiro e trechos de contexto
 - [x] Hash SHA-256 do texto analisado e saída JSON
@@ -9,7 +9,8 @@
 ## Antes de buscar usuários
 - [ ] Fazer avaliação com corpus de publicações públicas e documentos sintéticos, sem expor dados privados
 - [ ] Medir falsos positivos/negativos e documentar limitações
-- [ ] Adicionar adaptadores seguros e testados para PDF com texto extraível
+- [x] Adicionar análise offline de PDFs com texto extraível, páginas numeradas e SHA-256 dos bytes originais
+- [x] Criar testes sintéticos para PDF, páginas vazias e compatibilidade com TXT
 - [ ] Rever segurança, privacidade e licenças de todas as fontes
 - [ ] Adicionar guia acessível para usuários sem experiência técnica
 
