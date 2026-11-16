@@ -1,0 +1,241 @@
+{
+  "dataset": "convocalivre-synthetic-act-cases-v1",
+  "dataset_type": "synthetic_only",
+  "notice": "Nomes e atos inteiramente ficticios; não usar as métricas como estimativa de qualidade em diários oficiais reais.",
+  "cases": [
+    {
+      "id": "C01",
+      "text": "Fica convocada Maria de Sousa para apresentar documentação.",
+      "name": "Maria de Sousa",
+      "expected": "convocacao"
+    },
+    {
+      "id": "C02",
+      "text": "A secretaria CONVOCA João Lima Alves para exame admissional.",
+      "name": "João Lima Alves",
+      "expected": "convocacao"
+    },
+    {
+      "id": "C03",
+      "text": "Ana Paula Ribeiro foi convocada para a reunião.",
+      "name": "Ana Paula Ribeiro",
+      "expected": "convocacao"
+    },
+    {
+      "id": "C04",
+      "text": "EDITAL: CONVOCAÇÃO de Carlos Augusto Mendes para posse.",
+      "name": "Carlos Augusto Mendes",
+      "expected": "convocacao"
+    },
+    {
+      "id": "C05",
+      "text": "Marta do Carmo foi convocada para entregar títulos.",
+      "name": "Marta do Carmo",
+      "expected": "convocacao"
+    },
+    {
+      "id": "C06",
+      "text": "Este edital convoca Pedro Henrique Lemos.",
+      "name": "Pedro Henrique Lemos",
+      "expected": "convocacao"
+    },
+    {
+      "id": "N01",
+      "text": "Fica nomeada Maria de Sousa para o cargo de analista.",
+      "name": "Maria de Sousa",
+      "expected": "nomeacao"
+    },
+    {
+      "id": "N02",
+      "text": "O prefeito nomeia João Lima Alves para uma função pública.",
+      "name": "João Lima Alves",
+      "expected": "nomeacao"
+    },
+    {
+      "id": "N03",
+      "text": "PORTARIA: NOMEAÇÃO de Ana Paula Ribeiro para técnica.",
+      "name": "Ana Paula Ribeiro",
+      "expected": "nomeacao"
+    },
+    {
+      "id": "N04",
+      "text": "O decreto nomeou Carlos Augusto Mendes para o cargo.",
+      "name": "Carlos Augusto Mendes",
+      "expected": "nomeacao"
+    },
+    {
+      "id": "N05",
+      "text": "Marta do Carmo foi nomeada para a secretaria.",
+      "name": "Marta do Carmo",
+      "expected": "nomeacao"
+    },
+    {
+      "id": "N06",
+      "text": "Pedro Henrique Lemos é nomeado para o cargo de auxiliar.",
+      "name": "Pedro Henrique Lemos",
+      "expected": "nomeacao"
+    },
+    {
+      "id": "D01",
+      "text": "A exclusão de Maria de Sousa da lista de aprovados decorre de desistência da nomeação.",
+      "name": "Maria de Sousa",
+      "expected": "desistencia_exclusao"
+    },
+    {
+      "id": "D02",
+      "text": "Fica excluído João Lima Alves do certame por desistência.",
+      "name": "João Lima Alves",
+      "expected": "desistencia_exclusao"
+    },
+    {
+      "id": "D03",
+      "text": "Ana Paula Ribeiro desistiu da vaga oferecida.",
+      "name": "Ana Paula Ribeiro",
+      "expected": "desistencia_exclusao"
+    },
+    {
+      "id": "D04",
+      "text": "Fica sem efeito a nomeação de Carlos Augusto Mendes.",
+      "name": "Carlos Augusto Mendes",
+      "expected": "desistencia_exclusao"
+    },
+    {
+      "id": "D05",
+      "text": "É anulada a nomeação de Marta do Carmo.",
+      "name": "Marta do Carmo",
+      "expected": "desistencia_exclusao"
+    },
+    {
+      "id": "D06",
+      "text": "Desclassificado Pedro Henrique Lemos por ausência de documento.",
+      "name": "Pedro Henrique Lemos",
+      "expected": "desistencia_exclusao"
+    },
+    {
+      "id": "R01",
+      "text": "Resultado final: Maria de Sousa está classificada em quinto lugar.",
+      "name": "Maria de Sousa",
+      "expected": "resultado_homologacao"
+    },
+    {
+      "id": "R02",
+      "text": "Fica homologada a classificação de João Lima Alves no concurso.",
+      "name": "João Lima Alves",
+      "expected": "resultado_homologacao"
+    },
+    {
+      "id": "R03",
+      "text": "O edital homologa resultado de Ana Paula Ribeiro.",
+      "name": "Ana Paula Ribeiro",
+      "expected": "resultado_homologacao"
+    },
+    {
+      "id": "R04",
+      "text": "Carlos Augusto Mendes consta na lista de aprovados.",
+      "name": "Carlos Augusto Mendes",
+      "expected": "resultado_homologacao"
+    },
+    {
+      "id": "R05",
+      "text": "CLASSIFICAÇÃO: Marta do Carmo ficou em segundo lugar.",
+      "name": "Marta do Carmo",
+      "expected": "resultado_homologacao"
+    },
+    {
+      "id": "R06",
+      "text": "Pedro Henrique Lemos foi aprovado na etapa objetiva.",
+      "name": "Pedro Henrique Lemos",
+      "expected": "resultado_homologacao"
+    },
+    {
+      "id": "I01",
+      "text": "Maria de Sousa compareceu à sessão informativa.",
+      "name": "Maria de Sousa",
+      "expected": "indeterminado"
+    },
+    {
+      "id": "I02",
+      "text": "Fica convocado outro candidato. Ana Paula Ribeiro apresentou recurso.",
+      "name": "Ana Paula Ribeiro",
+      "expected": "indeterminado"
+    },
+    {
+      "id": "I03",
+      "text": "João Lima Alves não foi nomeado.",
+      "name": "João Lima Alves",
+      "expected": "indeterminado"
+    },
+    {
+      "id": "I04",
+      "text": "Não se trata de convocação de Carlos Augusto Mendes.",
+      "name": "Carlos Augusto Mendes",
+      "expected": "indeterminado"
+    },
+    {
+      "id": "I05",
+      "text": "Marta do Carmo foi mencionada em relatório estatístico.",
+      "name": "Marta do Carmo",
+      "expected": "indeterminado"
+    },
+    {
+      "id": "I06",
+      "text": "A publicação fala em nomeação de outro servidor; Pedro Henrique Lemos enviou recurso.",
+      "name": "Pedro Henrique Lemos",
+      "expected": "indeterminado"
+    },
+    {
+      "id": "I07",
+      "text": "Carlos Augusto Mendes aparece no edital.\nFica convocado outro candidato.",
+      "name": "Carlos Augusto Mendes",
+      "expected": "indeterminado"
+    },
+    {
+      "id": "I08",
+      "text": "O edital de nomeação foi publicado para outro cargo.\nMaria de Sousa consta em lista informativa.",
+      "name": "Maria de Sousa",
+      "expected": "indeterminado"
+    },
+    {
+      "id": "H01",
+      "text": "Convoca Marta do Carmo e nomeia Pedro Henrique Lemos.",
+      "name": "Marta do Carmo",
+      "expected": "convocacao"
+    },
+    {
+      "id": "H02",
+      "text": "Fica nomeada Maria de Sousa e convocada Ana Paula Ribeiro para providências.",
+      "name": "Maria de Sousa",
+      "expected": "nomeacao"
+    },
+    {
+      "id": "M01",
+      "text": "Fica convocado João Lima Alves para documentos.",
+      "name": "Maria de Sousa",
+      "expected": "no_name_match"
+    },
+    {
+      "id": "M02",
+      "text": "Maria de Souzinha foi nomeada para o cargo.",
+      "name": "Maria de Sousa",
+      "expected": "no_name_match"
+    },
+    {
+      "id": "M03",
+      "text": "A portaria apresenta uma norma geral sem candidato.",
+      "name": "Maria de Sousa",
+      "expected": "no_name_match"
+    },
+    {
+      "id": "M04",
+      "text": "Carlos Augusto Mendes consta no edital.",
+      "name": "Marta do Carmo",
+      "expected": "no_name_match"
+    },
+    {
+      "id": "M05",
+      "text": "Foi convocada Márcia de Sousa.",
+      "name": "Maria de Sousa",
+      "expected": "no_name_match"
+    }
+  ]
+}
