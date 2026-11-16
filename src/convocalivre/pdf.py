@@ -12,6 +12,7 @@ from pypdf.errors import PdfReadError
 
 from .core import analyze
 from .acts import count_act_types
+from .table_context import infer_table_act
 
 MAX_PDF_BYTES = 25 * 1024 * 1024
 MAX_PAGES = 250
@@ -61,6 +62,7 @@ def analyze_pdf(
         layout_fallback_pages: set[int] = set()
         layout_rejected_pages: set[int] = set()
         layout_error_pages: set[int] = set()
+        table_context_pages: set[int] = set()
         for page_number, page in enumerate(reader.pages, start=1):
             stream = page.get_contents()
             if stream is not None and len(stream.get_data()) > MAX_PAGE_STREAM_BYTES:
@@ -114,6 +116,15 @@ def analyze_pdf(
                 if re.search(r"[\r\n\t]| {8,}", raw_name):
                     layout_rejected_pages.add(page_number)
                     continue
+                # Only a conservatively linked numbered edital can supply
+                # table context. Never borrow a term from another column.
+                if match["act_type"] == "indeterminado":
+                    inferred = infer_table_act(
+                        layout_text, match["offset_start"], match["offset_end"]
+                    )
+                    if inferred:
+                        match = {**match, **inferred}
+                        table_context_pages.add(page_number)
                 matches.append({
                     "page_number": page_number,
                     "extraction_mode": "layout_fallback",
@@ -140,6 +151,13 @@ def analyze_pdf(
             + ". Verifique visualmente: o layout pode omitir texto rotacionado e "
             "misturar elementos de colunas ou tabelas."
         )
+    if table_context_pages:
+        warnings.append(
+            "Ato inferido de linhas de edital numerado na mesma coluna nas "
+            "paginas " + ", ".join(map(str, sorted(table_context_pages)))
+            + ". Verificacao visual obrigatoria: a heuristica pode confundir "
+            "tabelas, colunas e blocos administrativos."
+        )
     if layout_rejected_pages:
         warnings.append(
             "Candidatos a correspondencia descartados por separacao excessiva "
@@ -162,6 +180,7 @@ def analyze_pdf(
         "input_type": "pdf",
         "extraction_method": "pypdf_plain_with_layout_fallback",
         "layout_fallback_pages": sorted(layout_fallback_pages),
+        "table_context_pages": sorted(table_context_pages),
         "requested_name": name.strip(),
         "source_url_unverified": source_url,
         "publication_date_user_supplied": publication_date,
