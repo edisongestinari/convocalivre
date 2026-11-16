@@ -169,6 +169,23 @@ class PDFAnalysisTests(unittest.TestCase):
             self.assertEqual(report["layout_fallback_pages"], [])
             self.assertIn("descartados", " ".join(report["warnings"]))
 
+    def test_pdf_act_classification_and_manual_review(self):
+        with TemporaryDirectory() as folder:
+            pdf = Path(folder) / "actos.pdf"
+            make_pdf(pdf, [
+                "Fica convocada ANA PAULA SILVA para documentos.",
+                "E excluida ANA PAULA SILVA por desistência da nomeacao.".replace("desistência", "desistencia"),
+            ])
+            report = analyze_pdf(pdf, "Ana Paula Silva")
+            self.assertEqual(report["match_count"], 2)
+            self.assertEqual(
+                [m["act_type"] for m in report["matches"]],
+                ["convocacao", "desistencia_exclusao"],
+            )
+            self.assertEqual(report["act_type_counts"]["convocacao"], 1)
+            self.assertEqual(report["act_type_counts"]["desistencia_exclusao"], 1)
+            self.assertTrue(all(m["requires_manual_review"] for m in report["matches"]))
+
     def test_plain_match_keeps_default_extraction_mode(self):
         with TemporaryDirectory() as folder:
             pdf = Path(folder) / "simple.pdf"

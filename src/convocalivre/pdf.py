@@ -11,6 +11,7 @@ from pypdf import PdfReader
 from pypdf.errors import PdfReadError
 
 from .core import analyze
+from .acts import count_act_types
 
 MAX_PDF_BYTES = 25 * 1024 * 1024
 MAX_PAGES = 250
@@ -156,7 +157,7 @@ def analyze_pdf(
             "PDFs digitalizados podem exigir OCR, que nao e executado."
         )
     return {
-        "schema_version": "0.2",
+        "schema_version": "0.3",
         "tool": "ConvocaLivre",
         "input_type": "pdf",
         "extraction_method": "pypdf_plain_with_layout_fallback",
@@ -173,9 +174,11 @@ def analyze_pdf(
         "match_count": len(matches),
         "result": signal,
         "matches": matches,
+        "act_type_counts": count_act_types(matches),
         "warnings": warnings,
         "important_notice": (
-            "Apenas indicios automaticos. Consulte a pagina indicada no PDF "
-            "e confirme autenticidade, contexto e efeito juridico na fonte oficial."
+            "act_type e apenas um indicador heuristico, nao comprovacao de ato. "
+            "Consulte a pagina indicada e confirme contexto, autenticidade e "
+            "efeito juridico na fonte original."
         ),
     }

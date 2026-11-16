@@ -32,3 +32,6 @@ jobs:
 
       - name: Run unit tests
         run: python -m unittest discover -s tests -v
+
+      - name: Synthetic classification benchmark
+        run: python -m convocalivre.benchmark tests/fixtures/act_cases.json
