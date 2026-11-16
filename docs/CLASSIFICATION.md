@@ -30,8 +30,11 @@ da extração; especialmente em PDF, não comprova ausência do nome no arquivo 
    à nomeação ("exclusão por desistência da nomeação").
 5. Convocação e nomeação na mesma cláusula, sem critério inequívoco de ligação
    a uma única pessoa, causam **abstenção** (indeterminado).
-6. O classificador **não infere** automaticamente que o título de uma tabela
-   se aplica a todas as linhas subsequentes.
+6. Na versão 0.3.1, para PDFs em modo layout_fallback, há uma inferência
+   **conservadora** do cabeçalho numerado do edital para linhas de tabela,
+   somente se número de inscrição, coluna, cargo e duas linhas independentes
+   de evidência estiverem alinhados. Sem isso, o resultado segue
+   indeterminado. Consulte [TABLE_CONTEXT.md](TABLE_CONTEXT.md).
 
 O sistema pode errar com frases longas, colunas desalinhadas, texto OCR, negações
 complexas, atos com várias pessoas, verbos raros ou termos fora da mesma frase.
