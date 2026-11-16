@@ -64,8 +64,8 @@ positivos e falsos negativos por categoria, além de exemplos com divergência.
     python -m convocalivre.benchmark tests/fixtures/act_cases.json
 
 **As métricas são exclusivas dos 39 casos fictícios de desenvolvimento.
-Não representam precisão em documentos reais.** Consulte os critérios e
-limitações em [docs/CLASSIFICATION.md](docs/CLASSIFICATION.md).
+Não representam precisão em documentos reais.** Consulte os critérios em [docs/CLASSIFICATION.md](docs/CLASSIFICATION.md)
+e as métricas observadas em [docs/BENCHMARK_RESULTS.md](docs/BENCHMARK_RESULTS.md).
 
 ## Testes
 
