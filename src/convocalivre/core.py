@@ -11,6 +11,8 @@ from hashlib import sha256
 import re
 import unicodedata
 
+from .acts import classify_mention, count_act_types
+
 DEFAULT_TERMS = (
     "convocacao", "nomeacao", "nomear", "convocado", "convocada",
     "posse", "edital de convocacao", "aprovados",
@@ -78,16 +80,18 @@ def analyze(
         snippet = text[lo:hi]
         normalized_snippet, _ = normalize_with_mapping(snippet)
         found_terms = [original for original, term in zip(terms, term_norms) if _find_whole_expression(normalized_snippet, term)]
+        act = classify_mention(text, original_start, original_end)
         all_results.append({
             "offset_start": original_start,
             "offset_end": original_end,
             "excerpt": snippet,
             "matched_terms": list(dict.fromkeys(found_terms)),
             "signal": "possible_related_act" if found_terms else "name_mentioned_only",
+            **act,
         })
 
     return {
-        "schema_version": "0.1",
+        "schema_version": "0.3",
         "tool": "ConvocaLivre",
         "analyzed_at_utc": datetime.now(timezone.utc).isoformat(),
         "requested_name": name.strip(),
@@ -102,9 +106,11 @@ def analyze(
             else "no_name_match"
         ),
         "matches": all_results,
+        "act_type_counts": count_act_types(all_results),
         "important_notice": (
-            "Heuristic indication only; not official confirmation. "
-            "Open the originating publication and verify its authenticity and context. "
-            "TXT analysis uses this function; searchable PDF is supported by the PDF adapter. OCR is not supported."
+            "Indicacao heuristica, nao confirmacao oficial. "
+            "act_type descreve apenas um indicador na mesma frase/linha. "
+            "Verifique documento, autenticidade e contexto; sem OCR."
+
         ),
     }
