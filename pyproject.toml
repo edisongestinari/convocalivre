@@ -4,10 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "convocalivre"
-version = "0.1.0"
+version = "0.2.0"
 description = "Evidence-first, offline matching of names in Brazilian public gazette text"
 readme = "README.md"
 requires-python = ">=3.10"
+dependencies = ["pypdf>=5.0,<7"]
 license = "MIT"
 authors = [{name = "ConvocaLivre contributors"}]
 keywords = ["civic-tech", "brasil", "diario-oficial", "open-data", "transparencia"]
