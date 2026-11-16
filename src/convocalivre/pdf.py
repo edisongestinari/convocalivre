@@ -5,6 +5,7 @@ from __future__ import annotations
 from hashlib import sha256
 from io import BytesIO
 from pathlib import Path
+import re
 
 from pypdf import PdfReader
 from pypdf.errors import PdfReadError
@@ -56,6 +57,9 @@ def analyze_pdf(
             raise ValueError(f"PDF deve conter entre 1 e {MAX_PAGES} paginas.")
         matches: list[dict] = []
         pages_without_text: list[int] = []
+        layout_fallback_pages: set[int] = set()
+        layout_rejected_pages: set[int] = set()
+        layout_error_pages: set[int] = set()
         for page_number, page in enumerate(reader.pages, start=1):
             stream = page.get_contents()
             if stream is not None and len(stream.get_data()) > MAX_PAGE_STREAM_BYTES:
@@ -63,18 +67,58 @@ def analyze_pdf(
             text = page.extract_text() or ""
             if len(text) > MAX_PAGE_TEXT_CHARS:
                 raise ValueError(f"Pagina {page_number}: texto extraido acima do limite seguro.")
-            if not text.strip():
+
+            # O modo padrao pode embaralhar a ordem dos nomes em tabelas/colunas.
+            # Use layout como alternativa APENAS se nao houver ocorrencia na pagina.
+            plain_matches = []
+            if text.strip():
+                page_report = analyze(
+                    text, name, source_url=source_url,
+                    publication_date=publication_date, context_chars=context_chars,
+                )
+                plain_matches = page_report["matches"]
+            if plain_matches:
+                for match in plain_matches:
+                    matches.append({
+                        "page_number": page_number,
+                        "extraction_mode": "plain",
+                        **match,
+                    })
+                continue
+
+            try:
+                layout_text = page.extract_text(extraction_mode="layout") or ""
+            except (ValueError, NotImplementedError):
+                layout_error_pages.add(page_number)
+                if not text.strip():
+                    pages_without_text.append(page_number)
+                continue
+
+            if len(layout_text) > MAX_PAGE_TEXT_CHARS:
+                raise ValueError(f"Pagina {page_number}: texto extraido acima do limite seguro.")
+            if not text.strip() and not layout_text.strip():
                 pages_without_text.append(page_number)
                 continue
-            page_report = analyze(
-                text,
-                name,
-                source_url=source_url,
-                publication_date=publication_date,
-                context_chars=context_chars,
+            if not layout_text.strip():
+                continue
+
+            layout_report = analyze(
+                layout_text, name, source_url=source_url,
+                publication_date=publication_date, context_chars=context_chars,
             )
-            for match in page_report["matches"]:
-                matches.append({"page_number": page_number, **match})
+            for match in layout_report["matches"]:
+                # Rejeitar nomes reconstruidos ENTRE linhas ou colunas distantes.
+                # Limite conservador: nao unificar tokens separados por >=8 espacos.
+                raw_name = layout_text[match["offset_start"]:match["offset_end"]]
+                if re.search(r"[\r\n\t]| {8,}", raw_name):
+                    layout_rejected_pages.add(page_number)
+                    continue
+                matches.append({
+                    "page_number": page_number,
+                    "extraction_mode": "layout_fallback",
+                    **match,
+                })
+                layout_fallback_pages.add(page_number)
     except PdfReadError as exc:
         raise ValueError("Nao foi possivel interpretar o PDF.") from exc
 
@@ -88,6 +132,24 @@ def analyze_pdf(
         "A deteccao de palavras proximas ao nome nao comprova nomeacao ou convocacao.",
         "URL e data sao informados pelo usuario e NAO foram verificados.",
     ]
+    if layout_fallback_pages:
+        warnings.append(
+            "Correspondencias encontradas por reconstrucao do layout nas paginas "
+            + ", ".join(map(str, sorted(layout_fallback_pages)))
+            + ". Verifique visualmente: o layout pode omitir texto rotacionado e "
+            "misturar elementos de colunas ou tabelas."
+        )
+    if layout_rejected_pages:
+        warnings.append(
+            "Candidatos a correspondencia descartados por separacao excessiva "
+            "entre palavras nas paginas "
+            + ", ".join(map(str, sorted(layout_rejected_pages))) + "."
+        )
+    if layout_error_pages:
+        warnings.append(
+            "Falha de extracao alternativa em paginas "
+            + ", ".join(map(str, sorted(layout_error_pages))) + "."
+        )
     if pages_without_text:
         warnings.append(
             "Paginas sem texto extraivel: " + ", ".join(map(str, pages_without_text)) + ". "
@@ -97,7 +159,8 @@ def analyze_pdf(
         "schema_version": "0.2",
         "tool": "ConvocaLivre",
         "input_type": "pdf",
-        "extraction_method": "pypdf_text_only",
+        "extraction_method": "pypdf_plain_with_layout_fallback",
+        "layout_fallback_pages": sorted(layout_fallback_pages),
         "requested_name": name.strip(),
         "source_url_unverified": source_url,
         "publication_date_user_supplied": publication_date,

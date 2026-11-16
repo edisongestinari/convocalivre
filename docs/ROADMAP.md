@@ -1,6 +1,6 @@
 # Roadmap verificável
 
-## Concluído no protótipo 0.2.0
+## Concluído no protótipo 0.2.1.0
 - [x] Núcleo de busca determinística offline em TXT UTF-8
 - [x] Normalização de acentuação, correspondência de nome inteiro e trechos de contexto
 - [x] Hash SHA-256 do texto analisado e saída JSON

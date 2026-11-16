@@ -1,4 +1,4 @@
-# Análise de PDF — ConvocaLivre 0.2
+# Análise de PDF — ConvocaLivre 0.2.1
 
 ## Escopo
 
@@ -12,7 +12,10 @@ Para cada ocorrência, o JSON registra:
 - excerpt: trecho textual extraído que inclui o nome;
 - offset_start / offset_end: posições no TEXTO EXTRAÍDO da página, não coordenadas visuais;
 - matched_terms: palavras relacionadas na janela próxima ao nome;
-- signal: possible_related_act ou name_mentioned_only.
+- signal: possible_related_act ou name_mentioned_only;
+- extraction_mode: `plain` (extração padrão) ou `layout_fallback` (reconstrução por layout).
+
+A partir da 0.2.1, se a extração padrão não localizar o nome completo em uma página, a aplicação tenta o modo layout. Candidatos cujo nome recuperado cruza linhas, tabulações ou oito ou mais espaços consecutivos são descartados para reduzir junções entre colunas. Esse critério conservador pode perder nomes legítimos e não elimina todas as ocorrências falsas. O relatório inclui `layout_fallback_pages` e avisos correspondentes. O modo layout pode ignorar texto rotacionado. A validação visual da página continua necessária.
 
 O relatório fornece também document_sha256 dos bytes originais, total de páginas, páginas sem texto e avisos. Hash não comprova autenticidade ou nomeação.
 

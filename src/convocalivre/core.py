@@ -105,6 +105,6 @@ def analyze(
         "important_notice": (
             "Heuristic indication only; not official confirmation. "
             "Open the originating publication and verify its authenticity and context. "
-            "PDF text extraction and OCR are not supported by this initial prototype."
+            "TXT analysis uses this function; searchable PDF is supported by the PDF adapter. OCR is not supported."
         ),
     }
