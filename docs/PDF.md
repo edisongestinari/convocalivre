@@ -35,6 +35,17 @@ As opções --source-url e --date são metadados opcionais fornecidos pelo usuá
 5. Há limites de tamanho, páginas e conteúdo por página; isso não impede todos os PDFs maliciosos. Analise arquivos não confiáveis em ambiente isolado.
 6. A URL informada não prova que o PDF corresponde ao diário oficial. Sempre confira a publicação na fonte.
 
+## Vinculação conservadora em tabelas (0.3.1)
+
+A versão 0.3.1 tenta vincular uma linha numerada de candidato ao
+edital numerado na mesma coluna de PDFs extraídos por layout, somente
+com cargo e duas linhas de evidência. Essa é uma **hipótese automática**,
+não prova de nomeação, convocação ou exclusão. A inferência vem no campo
+act_basis, com act_context_excerpt e act_heading_excerpt; as páginas
+classificadas por esse método aparecem em table_context_pages.
+O campo legado result pode permanecer name_mentioned_only.
+Detalhes e limites: [TABLE_CONTEXT.md](TABLE_CONTEXT.md).
+
 ## Testes e próximos passos
 
 A suíte inclui PDFs sintéticos para página exata, trecho, SHA-256, prevenção de associação entre páginas, páginas em branco, arquivos inválidos, limite de tamanho e compatibilidade TXT. Depois será necessário avaliar documentos reais cuja utilização seja permitida, medir precisão e documentar erros sem expor dados pessoais.
