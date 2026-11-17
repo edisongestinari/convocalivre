@@ -87,9 +87,11 @@ def launch() -> None:
             ttk.Label(outer, text="Resultados (todos exigem revisao humana):").pack(
                 anchor="w", pady=(0, 5)
             )
+            content = ttk.Frame(outer)
+            content.pack(fill="both", expand=True)
             columns = ("arquivo", "pagina", "resultado", "indicador")
             self.tree = ttk.Treeview(
-                outer, columns=columns, show="headings", selectmode="browse"
+                content, columns=columns, show="headings", selectmode="browse"
             )
             for key, caption, width in (
                 ("arquivo", "Arquivo", 310),
@@ -99,12 +101,10 @@ def launch() -> None:
             ):
                 self.tree.heading(key, text=caption)
                 self.tree.column(key, width=width, anchor="w", stretch=True)
-            yscroll = ttk.Scrollbar(outer, orient="vertical", command=self.tree.yview)
+            yscroll = ttk.Scrollbar(content, orient="vertical", command=self.tree.yview)
             self.tree.configure(yscrollcommand=yscroll.set)
-            content = ttk.Frame(outer)
-            content.pack(fill="both", expand=True)
-            self.tree.pack(in_=content, side="left", fill="both", expand=True)
-            yscroll.pack(in_=content, side="right", fill="y")
+            self.tree.pack(side="left", fill="both", expand=True)
+            yscroll.pack(side="right", fill="y")
             self.tree.bind("<Double-1>", lambda _event: self.open_selected())
 
             actions = ttk.Frame(outer)
