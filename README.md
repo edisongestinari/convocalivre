@@ -110,6 +110,8 @@ Não publique resultados que contenham nomes reais, nem cadastros, tokens, diár
 
 ## Próximos passos
 
+O [reteste exploratório de 0.3.3](docs/PUBLIC_PDF_AUDIT_RETEST_2026-11-17.md) mostra 8/8 classificações corretas **apenas nos casos efetivamente avaliados** (8/19 do manifesto). Os exemplos motivaram as regras; esse resultado não mede a acurácia real do produto. 
+
 Veja [docs/ROADMAP.md](docs/ROADMAP.md). A intenção é estudar uma integração **respeitosa** com a API pública [Querido Diário](https://docs.queridodiario.ok.org.br/pt-br/latest/utilizando/api-publica.html), testar precisão em documentos consentidos e atender usuários reais antes de solicitar bolsas de manutenção.
 
 ## Contribuições
