@@ -117,9 +117,17 @@ def open_online_dialog(parent, person_name: str) -> None:
     actions.pack(fill="x")
     open_button = ttk.Button(actions, text="Abrir publicação original")
     open_button.pack(side="left")
-    ttk.Label(
-        actions, text="Confirme sempre a ocorrência no documento oficial."
+    ttk.Button(
+        actions, text="Abrir site Querido Diário",
+        command=lambda: webbrowser.open("https://queridodiario.org.br/"),
     ).pack(side="left", padx=(12, 0))
+    ttk.Label(
+        outer, text=(
+            "Se a API não responder, use o site do Querido Diário ou "
+            "consulte diretamente o órgão responsável pela publicação. "
+            "Falha de conexão não significa ausência do nome."
+        ), wraplength=870,
+    ).pack(anchor="w", pady=(5, 0))
 
     def select_result(_event=None):
         selection = tree.selection()
@@ -166,7 +174,10 @@ def open_online_dialog(parent, person_name: str) -> None:
         search_button.state(["!disabled"])
         city_entry.state(["!disabled"])
         if kind == "error":
-            status.set(payload)
+            status.set(
+                payload + " Nenhuma conclusão pode ser tirada desta falha. "
+                "Use o botão para abrir o site como alternativa."
+            )
             return
         state["results"] = payload["results"]
         for item in tree.get_children():
