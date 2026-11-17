@@ -125,6 +125,8 @@ def launch() -> None:
             self.name_entry.focus_set()
 
         def _add(self, candidates):
+            if self.running:
+                return
             try:
                 selected = collect_files([*self.paths, *candidates])
             except ValueError as exc:
@@ -182,13 +184,14 @@ def launch() -> None:
             self.export_button.state(["disabled"])
             self.status.set(f"Analisando {len(self.paths)} documento(s) localmente...")
             self.scan_result = None
+            selected_files = self.paths[:]
             for item in self.tree.get_children():
                 self.tree.delete(item)
             self.row_paths = {}
 
             def worker():
                 try:
-                    report = analyze_local_files(self.paths[:], name)
+                    report = analyze_local_files(selected_files, name)
                     self.messages.put(("ok", report))
                 except Exception:
                     # Do not display sensitive parser exception content.
