@@ -53,8 +53,8 @@ def launch() -> None:
             ).pack(anchor="w")
             ttk.Label(
                 outer,
-                text="Consulta offline de nomes em publicacoes. "
-                     "O resultado nao confirma nomeacao nem convocacao.",
+                text="Consulta local de documentos e pesquisa online opcional (beta). "
+                     "Nenhum resultado confirma nomeacao nem convocacao.",
                 wraplength=990,
             ).pack(anchor="w", pady=(1, 12))
 
@@ -83,7 +83,7 @@ def launch() -> None:
             )
             self.run_button.pack(side="left", padx=(12, 6))
             self.online_button = ttk.Button(
-                controls, text="Consultar diarios online",
+                controls, text="Consultar diarios online (beta)",
                 command=self.open_online_search,
             )
             self.online_button.pack(side="left", padx=(3, 6))
