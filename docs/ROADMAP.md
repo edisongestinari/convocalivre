@@ -16,9 +16,18 @@
 - [x] Diagnóstico sanitizado da qualidade da camada textual de cada PDF
 - [x] Códigos de erro sanitizados para fontes públicas na auditoria
 - [x] Guia em português para instalação, pesquisa e interpretação cautelosa
-- [ ] Validar abertura da interface graficamente em Windows real de usuário
+- [x] Validar abertura, pesquisa local, indicador de atividade e PDF em Windows real de usuário
 - [ ] Resolver nomes não recuperados do PDF de Sabáudia, sem publicar informações pessoais
 - [ ] Implantar busca em fontes oficiais e alertas opcionais com consentimento e limites de acesso
+
+## Consulta remota experimental — versão 0.5.0
+- [x] Adicionar pesquisa sob demanda via API pública de terceiros
+- [x] Solicitar consentimento explícito antes de transmitir o nome
+- [x] Exigir código IBGE e limitar consultas/quantidade de resultados
+- [x] Separar possíveis menções online da classificação local de atos
+- [ ] Confirmar funcionamento real da API no Windows do usuário
+- [ ] Avaliar outras fontes, intervalos de datas, cobertura e deduplicação
+- [ ] Criar monitoramento periódico apenas com consentimento e controles
 
 ## Antes de buscar usuários
 - [ ] Fazer avaliação independente com publicações públicas e casos inéditos, sem expor dados privados
@@ -32,7 +41,8 @@
 - [ ] Adicionar guia acessível para usuários sem experiência técnica
 
 ## Integrações e manutenção pública (não implementadas)
-- [ ] Criar cliente resiliente para fontes oficiais autorizadas e API Querido Diário (respeitando referências de volume e termos)
+- [x] Criar cliente básico sob demanda para API Querido Diário, com requisição limitada
+- [ ] Melhorar resiliência, cobertura e fontes autorizadas após validação real
 - [ ] Conciliação de publicações repetidas com identificadores oficiais
 - [ ] Alertas opcionais configurados pelo próprio usuário sem expor nomes em logs
 - [ ] Localização PT-BR / EN e documentação de integração

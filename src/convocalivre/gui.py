@@ -53,8 +53,8 @@ def launch() -> None:
             ).pack(anchor="w")
             ttk.Label(
                 outer,
-                text="Consulta offline de nomes em publicacoes. "
-                     "O resultado nao confirma nomeacao nem convocacao.",
+                text="Consulta local de documentos e pesquisa online opcional (beta). "
+                     "Nenhum resultado confirma nomeacao nem convocacao.",
                 wraplength=990,
             ).pack(anchor="w", pady=(1, 12))
 
@@ -82,6 +82,11 @@ def launch() -> None:
                 controls, text="Buscar nome", command=self.run
             )
             self.run_button.pack(side="left", padx=(12, 6))
+            self.online_button = ttk.Button(
+                controls, text="Consultar diarios online (beta)",
+                command=self.open_online_search,
+            )
+            self.online_button.pack(side="left", padx=(3, 6))
             self.export_button = ttk.Button(
                 controls, text="Salvar relatorio JSON", command=self.export
             )
@@ -189,6 +194,20 @@ def launch() -> None:
                 self.tree.delete(item)
             self.status.set("Lista limpa. Selecione novos documentos.")
 
+        def open_online_search(self):
+            if self.running:
+                return
+            person_name = self.name.get().strip()
+            if len(person_name.split()) < 2:
+                messagebox.showwarning(
+                    "Nome", "Informe um nome completo antes da consulta online."
+                )
+                return
+            # Nothing is sent until the user explicitly confirms in the
+            # online dialog. Opening this window itself makes no requests.
+            from .online_gui import open_online_dialog
+            open_online_dialog(self.root, person_name)
+
         def run(self):
             if self.running:
                 return
@@ -207,6 +226,7 @@ def launch() -> None:
             self.run_button.state(["disabled"])
             self.run_button.configure(text="Procurando...")
             self.export_button.state(["disabled"])
+            self.online_button.state(["disabled"])
             self.add_files_button.state(["disabled"])
             self.add_folder_button.state(["disabled"])
             self.clear_button.state(["disabled"])
@@ -269,6 +289,7 @@ def launch() -> None:
             self.activity_frame.pack_forget()
             self.run_button.state(["!disabled"])
             self.run_button.configure(text="Buscar nome")
+            self.online_button.state(["!disabled"])
             self.add_files_button.state(["!disabled"])
             self.add_folder_button.state(["!disabled"])
             self.clear_button.state(["!disabled"])

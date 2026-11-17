@@ -1,4 +1,4 @@
-# Guia de uso — ConvocaLivre 0.4.1 (MVP local)
+# Guia de uso — ConvocaLivre 0.5.0 (MVP local e consulta online opcional)
 
 O ConvocaLivre busca menções exatas a nomes completos em PDFs pesquisáveis
 e arquivos TXT **no próprio computador**, sem enviar nomes, documentos ou
@@ -21,7 +21,7 @@ python -m pip install --upgrade "https://github.com/edisongestinari/convocalivre
 python -m pip show convocalivre
 ~~~
 
-O segundo comando deve mostrar **Version: 0.4.1** depois da atualização.
+O segundo comando deve mostrar **Version: 0.5.0** depois da atualização.
 Se aparecer aviso de que a pasta Scripts não está no PATH, use sempre
 a forma **python -m convocalivre** — ela não depende do PATH.
 
@@ -50,6 +50,25 @@ python -m convocalivre gui
 
 A janela requer o componente **Tkinter** do Python. Se não estiver
 disponível, a ferramenta de linha de comando continua funcionando.
+
+## 2.1. Consultar diários oficiais online (experimental)
+
+A janela principal também oferece **Consultar diarios online**.
+Essa opção não faz parte da busca local:
+
+1. Informe o nome completo na janela principal.
+2. Clique em **Consultar diarios online**.
+3. Digite o código IBGE de 7 dígitos do município.
+   Para Cruzeiro do Oeste/PR, use **4106605**.
+4. Clique em **Consultar agora** e confirme explicitamente que
+   autoriza o envio do nome à API de terceiros.
+5. Confira a lista de edições, selecione uma possível menção e clique
+   em **Abrir publicação original**.
+
+Não há pesquisa automática em segundo plano nem alertas. A API pode
+ficar fora do ar, não cobrir o município ou não ter uma edição específica.
+Os trechos online **não recebem a classificação jurídica local**.
+Leia [o guia específico e aviso de privacidade](CONSULTA_ONLINE.md).
 
 ## 3. Buscar em uma pasta sem abrir a janela
 
@@ -100,10 +119,10 @@ original.
 
 ## 6. Limitações e segurança
 
-- **Sem rede:** os comandos de consulta, lote, diagnóstico e GUI não
-  acessam sites. A ferramenta experimental external_pdf_audit é
-  separada, destinada a desenvolvimento, e baixa os links listados
-  explicitamente no manifesto.
+- **Busca local sem rede:** selecionar PDFs/TXT, executar o lote e
+  diagnosticar PDFs não acessa sites. **A opção explicitamente online**
+  envia o nome à API pública de terceiros após consentimento. A ferramenta experimental external_pdf_audit é separada, destinada
+  a desenvolvimento, e baixa links listados no manifesto.
 - **Sem alertas automáticos:** as consultas só executam quando iniciadas
   pelo usuário. O programa ainda não monitora novas publicações.
 - **Sem rastreamento:** não existe serviço de cadastro de CPF/nome e
