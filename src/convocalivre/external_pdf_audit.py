@@ -26,6 +26,9 @@ from pypdf import PdfReader
 from .acts import EVENT_TYPES
 from .core import normalize_with_mapping
 from .pdf import analyze_pdf, MAX_PDF_BYTES, MAX_PAGES
+from .source_diagnostics import (
+    SourceDocumentError, source_failure_code, sanitized_page_text_health,
+)
 
 LABELS = (*EVENT_TYPES, "no_name_match")
 EVENTS = set(EVENT_TYPES) - {"indeterminado"}
@@ -69,7 +72,7 @@ def recover_name_from_page(page, digest: str) -> tuple[str | None, str | None]:
 def fetch_public_pdf(url: str, *, max_bytes: int = MAX_PDF_BYTES) -> bytes:
     parsed = urlparse(url)
     if parsed.scheme != "https" or not parsed.hostname:
-        raise ValueError("Only fixed HTTPS public PDF URLs are permitted")
+        raise SourceDocumentError("invalid_source_url")
     request = Request(
         url,
         headers={
@@ -81,10 +84,12 @@ def fetch_public_pdf(url: str, *, max_bytes: int = MAX_PDF_BYTES) -> bytes:
         final_url = response.geturl()
         # Reject protocol downgrade and do not follow redirection to HTTP.
         if urlparse(final_url).scheme != "https":
-            raise ValueError("Insecure redirect")
+            raise SourceDocumentError("insecure_redirect")
         data = response.read(max_bytes + 1)
-    if not data.startswith(b"%PDF-") or len(data) > max_bytes:
-        raise ValueError("Invalid or oversized PDF")
+    if len(data) > max_bytes:
+        raise SourceDocumentError("pdf_size_limit_exceeded")
+    if not data.startswith(b"%PDF-"):
+        raise SourceDocumentError("non_pdf_response")
     return data
 
 
@@ -158,7 +163,7 @@ def evaluate_public_pdfs(manifest: dict, fetcher=fetch_public_pdf) -> dict:
                 blob = fetcher(source["url"])
                 reader = PdfReader(BytesIO(blob), strict=False)
                 if reader.is_encrypted or not 1 <= len(reader.pages) <= MAX_PAGES:
-                    raise ValueError("Encrypted or oversized page count")
+                    raise SourceDocumentError("encrypted_or_page_limit")
                 path = Path(tmp) / (source_id + ".pdf")
                 path.write_bytes(blob)
                 saved[source_id] = path
@@ -169,6 +174,7 @@ def evaluate_public_pdfs(manifest: dict, fetcher=fetch_public_pdf) -> dict:
                 })
             except Exception as exc:
                 status["reason"] = type(exc).__name__
+                status["reason_code"] = source_failure_code(exc)
                 for case in source["cases"]:
                     case_results.append({
                         "id": case["id"], "source_id": source_id,
@@ -193,10 +199,16 @@ def evaluate_public_pdfs(manifest: dict, fetcher=fetch_public_pdf) -> dict:
                 except Exception as exc:
                     result.update({
                         "status": "locator_error", "reason": type(exc).__name__,
+                        "reason_code": source_failure_code(exc),
                     })
                     continue
                 if name is None:
                     result["status"] = "target_unresolved"
+                    # A missing hashed target may reflect encoding, token order,
+                    # OCR absence or an annotation mismatch, not name absence.
+                    result["text_health"] = sanitized_page_text_health(
+                        reader.pages[target_page - 1]
+                    )
                     continue
                 result["locator_mode"] = locator
                 recovered[case["id"]] = name
