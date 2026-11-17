@@ -70,3 +70,26 @@ Esses testes não demonstram disponibilidade do servidor externo em
 produção. Uma verificação manual com conexão à internet será necessária.
 O ConvocaLivre continuará oferecendo as funções offline 0.4.1
 mesmo que essa nova conexão não responda.
+
+## Estado de disponibilidade verificado em 17/11/2026
+
+A execução de verificação externa do GitHub Actions
+[44144551851](https://github.com/edisongestinari/convocalivre/actions/runs/44144551851)
+utilizou apenas o termo público **orcamento** (não pesquisou nomes de pessoas)
+e testou quatro endereços de API atribuídos ao projeto. Nenhum retornou
+resultado consultável nessa execução:
+
+- api.queridodiario.ok.org.br/gazettes: erro de conexão segura TLS;
+- queridodiario.ok.org.br/api/gazettes: tempo limite;
+- api.queridodiario.org.br/gazettes: tempo limite;
+- queridodiario.org.br/api/gazettes: tempo limite.
+
+A função de integração foi **testada com respostas simuladas**, mas sua
+disponibilidade em ambiente real **não está validada**. O comportamento
+correto em falha é exibir erro de rede, não zero ocorrências.
+
+A janela também oferece **Abrir site Querido Diário** como alternativa
+para consulta manual. A pesquisa offline continua funcional, mesmo
+que a API permaneça fora do ar. Esse bloqueio externo precisa de
+nova verificação antes de considerar a busca online pronta para
+uso público.
