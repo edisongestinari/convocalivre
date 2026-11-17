@@ -13,6 +13,7 @@ from pypdf.errors import PdfReadError
 from .core import analyze
 from .acts import count_act_types
 from .table_context import infer_table_act
+from .structured_context import infer_same_page_table, infer_previous_page_continuation
 
 MAX_PDF_BYTES = 25 * 1024 * 1024
 MAX_PAGES = 250
@@ -63,6 +64,7 @@ def analyze_pdf(
         layout_rejected_pages: set[int] = set()
         layout_error_pages: set[int] = set()
         table_context_pages: set[int] = set()
+        structured_context_pages: set[int] = set()
         for page_number, page in enumerate(reader.pages, start=1):
             stream = page.get_contents()
             if stream is not None and len(stream.get_data()) > MAX_PAGE_STREAM_BYTES:
@@ -82,6 +84,19 @@ def analyze_pdf(
                 plain_matches = page_report["matches"]
             if plain_matches:
                 for match in plain_matches:
+                    if match["act_type"] == "indeterminado":
+                        inferred = infer_same_page_table(
+                            text, match["offset_start"], match["offset_end"]
+                        )
+                        if not inferred and page_number > 1:
+                            prior = reader.pages[page_number - 2].extract_text() or ""
+                            if len(prior) <= MAX_PAGE_TEXT_CHARS:
+                                inferred = infer_previous_page_continuation(
+                                    prior, text, match["offset_start"], match["offset_end"]
+                                )
+                        if inferred:
+                            match = {**match, **inferred}
+                            structured_context_pages.add(page_number)
                     matches.append({
                         "page_number": page_number,
                         "extraction_mode": "plain",
@@ -125,6 +140,13 @@ def analyze_pdf(
                     if inferred:
                         match = {**match, **inferred}
                         table_context_pages.add(page_number)
+                    else:
+                        inferred = infer_same_page_table(
+                            layout_text, match["offset_start"], match["offset_end"]
+                        )
+                        if inferred:
+                            match = {**match, **inferred}
+                            structured_context_pages.add(page_number)
                 matches.append({
                     "page_number": page_number,
                     "extraction_mode": "layout_fallback",
@@ -158,6 +180,12 @@ def analyze_pdf(
             + ". Verificacao visual obrigatoria: a heuristica pode confundir "
             "tabelas, colunas e blocos administrativos."
         )
+    if structured_context_pages:
+        warnings.append(
+            "Ato inferido de tabela estruturada ou continuacao de portaria "
+            "nas paginas " + ", ".join(map(str, sorted(structured_context_pages)))
+            + ". Verifique a associacao ao nome visualmente no PDF original."
+        )
     if layout_rejected_pages:
         warnings.append(
             "Candidatos a correspondencia descartados por separacao excessiva "
@@ -181,6 +209,7 @@ def analyze_pdf(
         "extraction_method": "pypdf_plain_with_layout_fallback",
         "layout_fallback_pages": sorted(layout_fallback_pages),
         "table_context_pages": sorted(table_context_pages),
+        "structured_context_pages": sorted(structured_context_pages),
         "requested_name": name.strip(),
         "source_url_unverified": source_url,
         "publication_date_user_supplied": publication_date,
