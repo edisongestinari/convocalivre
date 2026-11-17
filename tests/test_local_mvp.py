@@ -107,6 +107,49 @@ class LocalMVPTests(unittest.TestCase):
             self.assertEqual(batch["documents"][2]["status"], "error")
             self.assertEqual(batch["documents"][2]["error_type"], "ValueError")
 
+    def test_search_progress_events_for_success_and_error(self):
+        # Progress is emitted around each document without blocking analysis.
+        with TemporaryDirectory() as folder:
+            p = Path(folder)
+            good = p / "a.txt"
+            bad = p / "b.pdf"
+            good.write_text("ANA PAULA SILVA convocada", encoding="utf-8")
+            bad.write_text("invalid PDF", encoding="utf-8")
+            events = []
+            report = analyze_local_files(
+                [good, bad], "Ana Paula Silva",
+                on_progress=lambda index, total, filename, phase:
+                    events.append((index, total, filename, phase)),
+            )
+            self.assertEqual(events, [
+                (1, 2, "a.txt", "start"),
+                (1, 2, "a.txt", "done"),
+                (2, 2, "b.pdf", "start"),
+                (2, 2, "b.pdf", "done"),
+            ])
+            self.assertEqual(report["mention_count"], 1)
+            self.assertEqual(report["files_failed"], 1)
+
+    def test_search_progress_is_optional_and_report_unchanged(self):
+        with TemporaryDirectory() as folder:
+            p = Path(folder) / "edital.txt"
+            p.write_text("Fica convocada ANA PAULA SILVA", encoding="utf-8")
+            snapshots = []
+            with_progress = analyze_local_files(
+                [p], "Ana Paula Silva",
+                on_progress=lambda *event: snapshots.append(event),
+            )
+            without_progress = analyze_local_files([p], "Ana Paula Silva")
+            for key in ("files_total", "files_analyzed", "files_failed",
+                        "files_with_name", "mention_count"):
+                self.assertEqual(with_progress[key], without_progress[key])
+            # Timestamps naturally differ between two separate invocations.
+            first = with_progress["documents"][0]["report"]
+            second = without_progress["documents"][0]["report"]
+            for key in ("match_count", "matches", "result", "act_type_counts"):
+                self.assertEqual(first[key], second[key])
+            self.assertEqual(len(snapshots), 2)
+
     def test_max_batch_files_limit(self):
         with TemporaryDirectory() as folder:
             p = Path(folder)

@@ -1,4 +1,4 @@
-# Guia de uso — ConvocaLivre 0.4.0 (MVP local)
+# Guia de uso — ConvocaLivre 0.4.1 (MVP local)
 
 O ConvocaLivre busca menções exatas a nomes completos em PDFs pesquisáveis
 e arquivos TXT **no próprio computador**, sem enviar nomes, documentos ou
@@ -21,7 +21,7 @@ python -m pip install --upgrade "https://github.com/edisongestinari/convocalivre
 python -m pip show convocalivre
 ~~~
 
-O segundo comando deve mostrar **Version: 0.4.0** depois da atualização.
+O segundo comando deve mostrar **Version: 0.4.1** depois da atualização.
 Se aparecer aviso de que a pasta Scripts não está no PATH, use sempre
 a forma **python -m convocalivre** — ela não depende do PATH.
 
@@ -34,7 +34,11 @@ python -m convocalivre gui
 1. Informe seu **nome completo** (ao menos duas partes).
 2. Clique em **Adicionar PDFs/TXT** e escolha até 100 arquivos, ou em
    **Adicionar pasta** para varrer os documentos da pasta selecionada.
-3. Clique em **Buscar nome**. A análise é local e pode demorar em PDFs extensos.
+3. Clique em **Buscar nome**. Um aviso **Procurando...** com barra animada
+   aparecerá imediatamente; para vários documentos, a janela informa qual
+   arquivo está sendo pesquisado. A animação indica atividade, **não um
+   percentual estimado**. A análise é local e pode demorar em PDFs extensos.
+   O aviso desaparece ao terminar ou ocorrer uma falha.
 4. Leia a tabela de ocorrências: nome do arquivo, página física,
    **hipótese** de ato e termo indicador.
 5. Selecione uma ocorrência e clique em **Abrir PDF selecionado** para
