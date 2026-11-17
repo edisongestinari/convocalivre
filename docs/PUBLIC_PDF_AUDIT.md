@@ -35,7 +35,7 @@ A coluna página é a **página física do PDF**, iniciando em 1.
 
 **Composição:** 10 arquivos PDF, 19 ocorrências positivas (que incluem
 dois casos de "indeterminado" porque licenças não fazem parte das quatro
-categorias), além de 8 sondagens negativas cruzadas entre documentos.
+categorias), além de 13 sondagens negativas entre documentos e páginas.
 
 O caso de Cruzeiro do Oeste é um **caso de desenvolvimento já conhecido**,
 portanto não é independente e deve ser destacado ao interpretar os totais.
