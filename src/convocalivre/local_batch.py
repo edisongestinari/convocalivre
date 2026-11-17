@@ -10,6 +10,7 @@ from .pdf import analyze_pdf
 
 ALLOWED_EXTENSIONS = {".pdf", ".txt"}
 MAX_BATCH_FILES = 100
+MAX_TXT_BYTES = 25 * 1024 * 1024
 
 
 def collect_files(inputs: list[str | Path], *, recursive: bool = False) -> list[Path]:
@@ -58,7 +59,12 @@ def analyze_local_files(files: list[str | Path], name: str) -> dict:
             if path.suffix.lower() == ".pdf":
                 report = analyze_pdf(path, name)
             else:
-                report = analyze(path.read_text(encoding="utf-8"), name)
+                if path.stat().st_size > MAX_TXT_BYTES:
+                    raise ValueError("TXT excede o limite seguro de tamanho.")
+                content = path.read_text(encoding="utf-8")
+                if "\x00" in content:
+                    raise ValueError("TXT contem bytes nulos e nao e texto simples.")
+                report = analyze(content, name)
             item.update(status="analyzed", report=report)
             mentions += report["match_count"]
             files_with_names += int(report["match_count"] > 0)
