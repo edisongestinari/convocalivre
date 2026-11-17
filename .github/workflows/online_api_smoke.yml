@@ -48,5 +48,6 @@ jobs:
               except Exception as exc:
                   print("Endpoint:", endpoint,
                         "unavailable:", type(exc).__name__,
+                        "http_status:", getattr(exc,"code",None),
                         "reason:", type(getattr(exc,"reason",None)).__name__)
           PY
