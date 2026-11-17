@@ -1,4 +1,4 @@
-# Leitura conservadora de tabelas em PDFs — 0.3.1
+# Leitura conservadora de tabelas em PDFs — 0.3.2
 
 ## Problema
 
@@ -49,6 +49,30 @@ O campo legado result, com valores como name_mentioned_only, não é
 reinterpretado pela classificação de tabelas: ele depende de palavras
 dentro do trecho local e pode diferir de act_type. Analise act_type
 e o suporte textual antes de tirar qualquer conclusão.
+
+## Referências a editais anteriores (0.3.2)
+
+Alguns atos citam o edital de abertura do concurso e o edital anterior
+que convocou o candidato. Essas referências **não iniciam um novo ato**.
+A análise de tabela agora exige que o cabeçalho em sua coluna comece por
+EDITAL numerado e seja corroborado por uma SUMULA nas três linhas seguintes.
+Apenas um cabeçalho assim pode vincular-se à tabela. Mencionar *Edital de
+Abertura nº 001/2024* ou *Edital de Convocação nº 313/2026* dentro do corpo
+não interrompe o bloco nem transforma uma exclusão em convocação.
+
+O separador de outros documentos (PORTARIA, DECRETO, EXTRATO ou AVISO)
+só é considerado quando inicia o segmento da coluna, em vez de aparecer
+incidentalmente dentro de um parágrafo. Um segundo cabeçalho de edital
+independente continua causando abstenção.
+
+Esse ajuste foi motivado pelo diagnóstico do Edital nº 314/2026: um
+cabeçalho oficial na linha 188, uma referência ao edital anterior
+perto da linha 191 e outra referência ao edital de convocação na
+linha 197. Essas posições são **linhas do texto extraído**, não posições
+normativas nem coordenadas na página.
+
+As alterações são testadas com nomes e textos sintéticos. Ainda é
+necessário retestar no PDF original para confirmar a vinculação correta.
 
 ## O que fica fora da cobertura
 

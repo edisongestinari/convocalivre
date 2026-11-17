@@ -19,7 +19,13 @@ MAX_COLUMN_DRIFT = 22
 MAX_ROW_TO_HEADING_COLUMN = 48
 MIN_EVIDENCE_LINES = 2
 
-_HEADING = re.compile(r"\bEDITAL\b.{0,28}?\b\d{1,4}/20\d{2}\b", re.I)
+# A reference such as "Edital de Abertura nº 001/2024" is NOT a new
+# edital heading. Require a heading at the start of its own column cell.
+_HEADING = re.compile(
+    r"^edital\s+n[.oº°]?\s*\d{1,4}/20\d{2}\b"
+)
+_SUMULA = re.compile(r"^sumula\s*:")
+
 _REGISTRATION = re.compile(r"(?:^| {8,}) *(\d{2,8}) {2,}$")
 _CARGO = re.compile(r"\bCARGO\b", re.I)
 _OTHER_BLOCK = re.compile(
@@ -106,17 +112,31 @@ def infer_table_act(
     if not 0 < name_col - registration_col <= MAX_ROW_TO_HEADING_COLUMN:
         return None
 
-    headings: list[tuple[int, int, str]] = []
+    headings: list[tuple[int, int, str, bool]] = []
     for index in range(
         max(0, target_index - MAX_HEADING_LOOKBACK), target_index
     ):
-        current = rows[index].rstrip("\r\n")
-        for heading in _HEADING.finditer(current):
-            if abs(heading.start() - registration_col) <= MAX_COLUMN_DRIFT:
-                headings.append((index, heading.start(), heading.group(0)))
-    if not headings:
+        cell = _aligned_segment(rows[index].rstrip("\r\n"), registration_col)
+        if cell is None:
+            continue
+        heading = _HEADING.match(_normalize(cell))
+        if heading is None:
+            continue
+        # The initial numbered heading must be corroborated by a SUMULA in
+        # the same column within the next three extracted lines. This keeps
+        # incidental references to older editais from being used as heads.
+        has_summary = any(
+            _SUMULA.match(_normalize(_aligned_segment(
+                rows[next_index].rstrip("\r\n"), registration_col
+            ) or ""))
+            for next_index in range(index + 1, min(index + 4, target_index))
+        )
+        headings.append((index, registration_col, cell[:100], has_summary))
+    # Exactly one clear header may own the table. A second, even without
+    # a summary, introduces an ambiguous document boundary: abstain.
+    if len(headings) != 1 or not headings[0][3]:
         return None
-    head_index, heading_col, heading_text = headings[-1]
+    head_index, heading_col, heading_text, _ = headings[0]
 
     cargo_indices: list[int] = []
     evidence: dict[str, list[tuple[int, str, str]]] = defaultdict(list)
@@ -125,7 +145,10 @@ def infer_table_act(
         cell = _aligned_segment(current, heading_col)
         if cell is None:
             continue
-        if _HEADING.search(cell) or _OTHER_BLOCK.search(cell):
+        # Reject only a new standalone act heading in the same column.
+        # References inside a paragraph ("Edital de Convocacao nº 313/2026")
+        # are not new document boundaries.
+        if _HEADING.match(_normalize(cell)) or _OTHER_BLOCK.match(cell):
             return None
         normalized = _normalize(cell)
         if _CARGO.search(normalized):
@@ -145,7 +168,19 @@ def infer_table_act(
     if not confirmed:
         return None
     if "desistencia_exclusao" in confirmed:
-        # References to a prior nomeacao can coexist with its cancellation.
+        # "aprovados" may appear in both the summary and the cancellation
+        # clause without signalling a positive RESULTADO/HOMOLOGACAO act.
+        # Only independent STRONG evidence of another act causes abstention.
+        competing_strong = any(
+            kind != "desistencia_exclusao"
+            and any(
+                _STRONG[kind].search(_normalize(cell))
+                for _, cell, _ in items
+            )
+            for kind, items in confirmed.items()
+        )
+        if competing_strong:
+            return None
         kind = "desistencia_exclusao"
     elif len(confirmed) == 1:
         kind = next(iter(confirmed))
