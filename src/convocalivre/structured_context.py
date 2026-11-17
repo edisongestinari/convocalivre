@@ -57,6 +57,16 @@ _CONVO_TABLE = re.compile(r"\bnome\s+d[oa]\s+candidat[oa]\b.*\bcargo\b")
 _RESULT_HEADER = re.compile(r"\bresultado\s+final\b.*\bprocesso\s+seletivo\b")
 _RESULT_TABLE = re.compile(r"\bpos\.?\b.*\binscricao\b.*\bnome\b.*\bnota\s+final\b")
 _RANKED_ROW = re.compile(r"^\s*\d{1,4}\s+\d{1,2}\s*[-–]\s*\d{4,6}\s+")
+# Annex-only public-exam results: the name precedes a long registration
+# number, unlike selection-process tables that begin with rank+registration.
+_RESULT_ANNEX_TITLE = re.compile(
+    r"\banexo\s*i\b.*\bedital\s+de\s+homologacao\s+do\s+resultado\s+final\b"
+)
+_RESULT_ANNEX_COLUMNS = re.compile(
+    r"\bnome\b.*\binscricao\b.*\bnota\s+final\b.*\bclassificacao\b"
+)
+_RESULT_ANNEX_REG = re.compile(r"^\s+\d{8,12}\b")
+
 _PREV_PORTARIA = re.compile(r"^\s*portaria\s+n[.oº°]?\s*[\d.]+(?:/20\d{2})?\b")
 _PREV_NOMEADA = re.compile(r"\bfica\s+nomead[oa]\b")
 _CONTINUATION_NAME = re.compile(r"\b(?:a\s+senhora|o\s+senhor|a\s+servidora|o\s+servidor)\s*$")
@@ -106,6 +116,34 @@ def infer_same_page_table(
                     "table_numbered_convocation_and_candidate_header",
                     [heading, actions[-1], tables[-1]], rows[heading],
                 )
+
+    # Joinville-type annex: unlike rank-first tables, each row starts
+    # with NAME followed immediately by a long registration number.
+    # Explicitly require the homologation title and scoring column names.
+    annex_titles = [
+        i for i in range(max(0, index - 22), index)
+        if _RESULT_ANNEX_TITLE.search(normalized[i])
+    ]
+    annex_tables = [
+        i for i in range(max(0, index - 22), index)
+        if _RESULT_ANNEX_COLUMNS.search(normalized[i])
+    ]
+    line_start = page_text.rfind("\n", 0, start) + 1
+    name_col = start - line_start
+    right_of_name = _norm(page_text[end:page_text.find("\n", end)
+                                    if "\n" in page_text[end:] else len(page_text)])
+    if (annex_titles and annex_tables
+            and annex_titles[-1] < annex_tables[-1] < index
+            and index - annex_tables[-1] <= 18
+            and not normalized[index][:name_col].strip()
+            and _RESULT_ANNEX_REG.match(right_of_name)
+            and not any(_ACT_HEADING.match(normalized[i])
+                        for i in range(annex_tables[-1] + 1, index))):
+        return _type_result(
+            "resultado_homologacao", "edital de homologacao do resultado final",
+            "annex_homologated_named_candidate_scores_table",
+            [annex_titles[-1], annex_tables[-1]], rows[annex_titles[-1]],
+        )
 
     # Fernão-type classification annex: candidate belongs to a ranked row
     # beneath a column heading, with FINAL RESULTS on this same page.
