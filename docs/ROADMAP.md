@@ -14,7 +14,8 @@
 - [ ] Fazer avaliação independente com publicações públicas e casos inéditos, sem expor dados privados
 - [x] Medir FP/FN em exemplos sintéticos de desenvolvimento, documentando limitações
 - [x] Criar auditoria exploratória reprodutível em múltiplas fontes públicas, sem nomes em claro no repositório
-- [ ] Medir FP/FN em conjunto independente de documentos reais e layouts variados (até que haja resultados e revisão independente)
+- [x] Corrigir falsos negativos conhecidos em convocação, homologação e portaria que atravessa página, com regressões e reteste exploratório 0.3.3
+- [ ] Medir FP/FN em conjunto independente de documentos reais e layouts variados (amostra externa de desenvolvimento não substitui revisão independente)
 - [x] Adicionar análise offline de PDFs com texto extraível, páginas numeradas e SHA-256 dos bytes originais
 - [x] Criar testes sintéticos para PDF, páginas vazias e compatibilidade com TXT
 - [ ] Rever segurança, privacidade e licenças de todas as fontes

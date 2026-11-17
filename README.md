@@ -1,4 +1,4 @@
-# ConvocaLivre (protótipo 0.3.2)
+# ConvocaLivre (protótipo 0.3.3)
 
 **Uma ferramenta aberta para encontrar indícios verificáveis de convocações e outros atos relacionados a nomes em textos e PDFs pesquisáveis de diários oficiais brasileiros.**
 
@@ -84,6 +84,20 @@ O comando abaixo baixa os documentos publicamente acessíveis apenas durante a e
 
 A [primeira auditoria executada em fontes reais](docs/PUBLIC_PDF_AUDIT_RESULTS_2026-11-16.md) registrou 5/10 PDFs acessíveis, 7/19 casos de referência avaliados e 4 falsos negativos de classificação de ato; leia a análise de viés e limitações antes de interpretar os números.
 
+## Contexto estruturado adicional em PDFs (0.3.3)
+
+Quando a correspondência do nome não possui um verbo diretamente associado,
+o modo de PDF pode utilizar **três estruturas estritamente reconhecidas**:
+convocação com comando explícito e cabeçalho de candidatos na mesma página;
+anexo de resultado final com classificação, inscrição e pontuação; e uma
+portaria de nomeação interrompida no fim de uma página que continua com
+destinatário inequívoco no início da página seguinte. Na ausência dos
+marcadores, retorna `indeterminado`.
+
+A evidência traz `act_basis` e linhas contextuais; nenhuma inferência
+confirma nomeação ou substitui conferência da publicação original.
+Veja [docs/STRUCTURED_CONTEXT.md](docs/STRUCTURED_CONTEXT.md).
+
 ## Testes
 
 ```bash
@@ -95,6 +109,8 @@ python -m unittest discover -s tests -v
 Não publique resultados que contenham nomes reais, nem cadastros, tokens, diários sensíveis ou dados privados. O resultado JSON pode incluir nome e trechos identificáveis: use-o localmente. Não faça scraping agressivo. Todo aviso é apenas um **indício**, e o documento oficial sempre deve ser consultado.
 
 ## Próximos passos
+
+O [reteste exploratório de 0.3.3](docs/PUBLIC_PDF_AUDIT_RETEST_2026-11-17.md) mostra 8/8 classificações corretas **apenas nos casos efetivamente avaliados** (8/19 do manifesto). Os exemplos motivaram as regras; esse resultado não mede a acurácia real do produto. 
 
 Veja [docs/ROADMAP.md](docs/ROADMAP.md). A intenção é estudar uma integração **respeitosa** com a API pública [Querido Diário](https://docs.queridodiario.ok.org.br/pt-br/latest/utilizando/api-publica.html), testar precisão em documentos consentidos e atender usuários reais antes de solicitar bolsas de manutenção.
 

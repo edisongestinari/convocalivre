@@ -4,6 +4,10 @@ on:
   pull_request:
     paths:
       - 'src/convocalivre/external_pdf_audit.py'
+      - 'src/convocalivre/structured_context.py'
+      - 'src/convocalivre/pdf.py'
+      - 'src/convocalivre/table_context.py'
+      - 'src/convocalivre/acts.py'
       - 'tests/fixtures/public_pdf_cases.json'
       - '.github/workflows/public_pdf_audit.yml'
 
