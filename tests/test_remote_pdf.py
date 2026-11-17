@@ -62,6 +62,12 @@ class FakeResponse:
 
 
 class RemotePDFTests(unittest.TestCase):
+    def test_gui_module_import_is_safe_without_display(self):
+        # Tk widgets must only be created after the user opens the dialog.
+        from convocalivre.remote_pdf_gui import open_remote_pdf_dialog
+        self.assertTrue(callable(open_remote_pdf_dialog))
+
+
     def test_valid_https_public_pdf_url(self):
         self.assertEqual(validate_public_pdf_url("  " + SOURCE + "  "), SOURCE)
 
