@@ -45,6 +45,12 @@ def make_pdf(path: Path, pages: list[str | None]) -> None:
 
 
 class LocalMVPTests(unittest.TestCase):
+    def test_gui_module_import_does_not_require_display(self):
+        # The GUI must not create a Tk root on package import.
+        from convocalivre import gui
+        self.assertTrue(callable(gui.launch))
+        self.assertTrue(callable(gui.main))
+
     def test_diagnose_page_status_is_text_free(self):
         with TemporaryDirectory() as folder:
             pdf = Path(folder) / "teste.pdf"
