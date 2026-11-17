@@ -73,8 +73,7 @@ class OnlineSearchTests(unittest.TestCase):
         self.assertEqual(result["results"][0]["date"], "2026-11-12")
         self.assertEqual(result["results"][0]["excerpt"], "ANA PAULA SILVA convocada em edital.")
         self.assertEqual(result["results"][0]["pdf_url"], "https://files.example.org/gazeta.pdf")
-        self.assertIn("não", result["notice"].lower().replace("nao", "não")
-                      if "não" in result["notice"].lower() else "não")
+        self.assertIn("possiveis mencoes", result["notice"].lower())
         self.assertNotIn("act_type", json.dumps(result))
 
     def test_invalid_urls_and_foreign_territory_are_not_presented(self):
@@ -87,13 +86,17 @@ class OnlineSearchTests(unittest.TestCase):
                  "url": "https://files.example.org/outro.pdf"},
                 {"territory_id": "4106605", "date": "2026-11-13",
                  "url": "javascript:alert(1)"},
+                {"territory_id": "4106605", "date": "2026-11-11",
+                 "url": "https://127.0.0.1/private"},
+                {"territory_id": "4106605", "date": "2026-11-10",
+                 "url": "https://[invalid/private"},
             ],
         }
         r = search_gazettes(
             "ANA PAULA SILVA", "4106605",
             opener=lambda *_a, **_k: FakeResponse(json.dumps(payload).encode()),
         )
-        self.assertEqual(r["returned_count"], 2)
+        self.assertEqual(r["returned_count"], 4)
         self.assertTrue(all(not x["pdf_url"] for x in r["results"]))
         self.assertNotIn("<script>", r["results"][0]["excerpt"])
 
