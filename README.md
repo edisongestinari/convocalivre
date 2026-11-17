@@ -1,14 +1,14 @@
-# ConvocaLivre 0.4.1 — MVP local
+# ConvocaLivre 0.5.0 — MVP local + consulta online experimental
 
 **Uma ferramenta aberta para encontrar indícios verificáveis de convocações e outros atos relacionados a nomes em textos e PDFs pesquisáveis de diários oficiais brasileiros.**
 
-> ⚠️ Protótipo inicial. NÃO consulta automaticamente sites oficiais, NÃO envia alertas, NÃO comprova nomeação, nem substitui verificação humana. O arquivo de exemplo é inteiramente fictício. PDFs digitalizados sem texto ainda não são reconhecidos.
+> ⚠️ Protótipo inicial. Consultas locais continuam offline; a nova consulta à API do Querido Diário é opcional, realizada somente após consentimento e depende da disponibilidade do serviço. NÃO monitora sites automaticamente, NÃO envia alertas, NÃO comprova nomeação, nem substitui verificação humana. O arquivo de exemplo é inteiramente fictício. PDFs digitalizados sem texto ainda não são reconhecidos.
 
 ## Agora com interface gráfica (MVP local 0.4.0)
 
 A versão 0.4.0 permite ao usuário comum consultar uma pasta de PDFs e
-TXT sem escrever código. **É uma ferramenta local, não um serviço de alertas
-automáticos nem um buscador de sites oficiais.**
+TXT sem escrever código. **A busca por arquivos continua local; há uma pesquisa online opcional
+em uma API pública, mas não existe serviço de alertas automáticos.**
 
 ### Abrir a interface no Windows
 
@@ -42,6 +42,23 @@ Os relatórios de busca, por outro lado, podem conter dados pessoais:
 não os publique indiscriminadamente.
 
 [Guia de instalação e utilização no Windows](docs/GUIA_USUARIO.md).
+
+## Nova consulta de diários online sob demanda (0.5.0, experimental)
+
+Na janela, clique em **Consultar diarios online**, informe o código IBGE
+do município e confirme a autorização. Somente então o programa envia
+o nome completo à **API pública do Querido Diário** e apresenta até dez
+possíveis menções, com trecho e link para a publicação original.
+
+A função é **separada da busca local**; não salva cadastros nem monitora
+publicações. A API de terceiros pode estar indisponível, e sua cobertura
+não é completa. Encontrar um trecho não equivale à confirmação jurídica
+de convocação ou nomeação. O serviço remoto pode registrar acessos,
+conforme as próprias políticas.
+
+O código IBGE de Cruzeiro do Oeste/PR é **4106605**. Para outros
+municípios, consulte os códigos oficiais do IBGE. [Guia e aviso de
+privacidade](docs/CONSULTA_ONLINE.md).
 
 ## Problema público
 
@@ -151,7 +168,7 @@ Não publique resultados que contenham nomes reais, nem cadastros, tokens, diár
 
 O [reteste exploratório de 0.3.3](docs/PUBLIC_PDF_AUDIT_RETEST_2026-11-17.md) mostra 8/8 classificações corretas **apenas nos casos efetivamente avaliados** (8/19 do manifesto). Os exemplos motivaram as regras; esse resultado não mede a acurácia real do produto. 
 
-Veja [docs/ROADMAP.md](docs/ROADMAP.md). A intenção é estudar uma integração **respeitosa** com a API pública [Querido Diário](https://docs.queridodiario.ok.org.br/pt-br/latest/utilizando/api-publica.html), testar precisão em documentos consentidos e atender usuários reais antes de solicitar bolsas de manutenção.
+Veja [docs/ROADMAP.md](docs/ROADMAP.md). Já existe uma integração **experimental e sob demanda** com a API pública [Querido Diário](https://docs.queridodiario.ok.org.br/pt-br/latest/utilizando/api-publica.html). Ainda faltam validação de disponibilidade real, testes independentes, monitoramento consentido e cobertura de fontes adicionais; também precisamos testar precisão em documentos consentidos e atender usuários reais antes de solicitar bolsas de manutenção.
 
 ## Contribuições
 
