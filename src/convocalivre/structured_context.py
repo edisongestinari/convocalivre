@@ -39,6 +39,7 @@ def _type_result(kind: str, indicator: str, basis: str, lines: list[int], headin
         "act_indicator": indicator,
         "act_basis": basis,
         "act_context_lines": [line + 1 for line in lines],
+        "act_context_page_offset": 0,
         "act_heading_excerpt": heading[:180],
         # No full snippets containing names or personal fields are added here.
         "requires_manual_review": True,
@@ -230,8 +231,11 @@ def infer_previous_page_continuation(
         for i in range(index + 1, followup[0] + 1)
     ):
         return None
-    return _type_result(
+    result = _type_result(
         "nomeacao", "fica nomeada",
         "adjacent_page_unfinished_portaria_named_recipient",
         [heading, actions[0]], prev_rows[heading],
     )
+    # Evidence lines refer to the PRIOR physical page, not the name page.
+    result["act_context_page_offset"] = -1
+    return result
