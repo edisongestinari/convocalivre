@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from datetime import date
 from html import unescape
+import ipaddress
 import json
 import re
 from urllib.error import HTTPError, URLError
@@ -41,11 +42,21 @@ def _safe_text(value: object, limit: int = MAX_EXCERPT) -> str:
 def _safe_https(value: object) -> str:
     if not isinstance(value, str) or len(value) > 2000:
         return ""
-    url = urlparse(value)
-    if (url.scheme == "https" and url.hostname
-            and not url.username and not url.password
-            and not any(ord(c) < 32 for c in value)):
-        return value
+    try:
+        url = urlparse(value)
+        host = (url.hostname or "").lower()
+        if not host or host == "localhost" or host.endswith(".local"):
+            return ""
+        try:
+            if not ipaddress.ip_address(host).is_global:
+                return ""
+        except ValueError:
+            pass  # Ordinary public DNS hostname.
+        if (url.scheme == "https" and not url.username and not url.password
+                and not any(ord(c) < 32 for c in value)):
+            return value
+    except ValueError:
+        pass  # Malformed URL, including unclosed IPv6 bracket.
     return ""
 
 
@@ -74,7 +85,8 @@ def _read_json(url: str, opener=urlopen) -> dict:
         with opener(request, timeout=15) as response:
             final_url = urlparse(response.geturl())
             if final_url.scheme != "https" or final_url.hostname not in {
-                "api.queridodiario.ok.org.br", "queridodiario.ok.org.br"
+                "api.queridodiario.ok.org.br", "queridodiario.ok.org.br",
+                "api.queridodiario.org.br", "queridodiario.org.br"
             }:
                 raise OnlineSearchError("Redirecionamento da API nao autorizado.")
             payload = response.read(MAX_RESPONSE_BYTES + 1)
