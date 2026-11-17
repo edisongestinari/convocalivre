@@ -22,9 +22,9 @@ MIN_EVIDENCE_LINES = 2
 # A reference such as "Edital de Abertura nº 001/2024" is NOT a new
 # edital heading. Require a heading at the start of its own column cell.
 _HEADING = re.compile(
-    r"^edital\\s+n[.oº°]?\\s*\\d{1,4}/20\\d{2}\\b"
+    r"^edital\s+n[.oº°]?\s*\d{1,4}/20\d{2}\b"
 )
-_SUMULA = re.compile(r"^sumula\\s*:")
+_SUMULA = re.compile(r"^sumula\s*:")
 
 _REGISTRATION = re.compile(r"(?:^| {8,}) *(\d{2,8}) {2,}$")
 _CARGO = re.compile(r"\bCARGO\b", re.I)
