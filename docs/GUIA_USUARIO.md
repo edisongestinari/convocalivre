@@ -1,4 +1,4 @@
-# Guia de uso — ConvocaLivre 0.5.0 (MVP local e consulta online opcional)
+# Guia de uso — ConvocaLivre 0.5.1 (MVP local e consulta online opcional)
 
 O ConvocaLivre busca menções exatas a nomes completos em PDFs pesquisáveis
 e arquivos TXT **no próprio computador**, sem enviar nomes, documentos ou
@@ -21,7 +21,7 @@ python -m pip install --upgrade "https://github.com/edisongestinari/convocalivre
 python -m pip show convocalivre
 ~~~
 
-O segundo comando deve mostrar **Version: 0.5.0** depois da atualização.
+O segundo comando deve mostrar **Version: 0.5.1** depois da atualização.
 Se aparecer aviso de que a pasta Scripts não está no PATH, use sempre
 a forma **python -m convocalivre** — ela não depende do PATH.
 
@@ -69,6 +69,18 @@ Não há pesquisa automática em segundo plano nem alertas. A API pode
 ficar fora do ar, não cobrir o município ou não ter uma edição específica.
 Os trechos online **não recebem a classificação jurídica local**.
 Leia [o guia específico e aviso de privacidade](CONSULTA_ONLINE.md).
+
+### Alternativa: analisar uma publicação online por link
+
+Se o Querido Diário mostrar falha de conexão, clique em
+**Analisar PDF por link (sem API)** na janela online. Cole o endereço
+HTTPS direto de uma edição e confirme o download público. A ferramenta
+baixa o documento temporariamente, verifica a presença do nome e
+mostra a página e a possível categoria do ato sem transmitir o nome
+como parâmetro de busca ao site do PDF.
+
+Consulte [PDF_POR_LINK.md](PDF_POR_LINK.md) para informações sobre
+privacidade, limites e erros de download.
 
 ## 3. Buscar em uma pasta sem abrir a janela
 
