@@ -236,9 +236,22 @@ def evaluate_public_pdfs(manifest: dict, fetcher=fetch_public_pdf) -> dict:
                     "status": "analysis_error", "reason": type(exc).__name__,
                 })
                 continue
-            observed = bool(report["matches"])
+            scoped_page = pair.get("page_number")
+            if scoped_page is not None:
+                if not isinstance(scoped_page, int) or not (
+                    1 <= scoped_page <= report["page_count"]
+                ):
+                    result["status"] = "invalid_reference_page"
+                    continue
+                observed = any(
+                    match["page_number"] == scoped_page
+                    for match in report["matches"]
+                )
+            else:
+                observed = bool(report["matches"])
             result.update({
                 "status": "evaluated",
+                "scope": "page" if scoped_page is not None else "document",
                 "predicted": "name_present" if observed else "no_name_match",
             })
             if observed:
