@@ -82,6 +82,8 @@ O comando abaixo baixa os documentos publicamente acessíveis apenas durante a e
 
 **Não compare os números com os 39 casos sintéticos como se fossem estimativas populacionais.** Consulte [o protocolo, as fontes e os limites](docs/PUBLIC_PDF_AUDIT.md).
 
+A [primeira auditoria executada em fontes reais](docs/PUBLIC_PDF_AUDIT_RESULTS_2026-11-16.md) registrou 5/10 PDFs acessíveis, 7/19 casos de referência avaliados e 4 falsos negativos de classificação de ato; leia a análise de viés e limitações antes de interpretar os números.
+
 ## Testes
 
 ```bash
