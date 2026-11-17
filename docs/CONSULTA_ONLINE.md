@@ -93,3 +93,17 @@ para consulta manual. A pesquisa offline continua funcional, mesmo
 que a API permaneça fora do ar. Esse bloqueio externo precisa de
 nova verificação antes de considerar a busca online pronta para
 uso público.
+
+## Alternativa sem API (0.5.1)
+
+Quando a API do Querido Diário falhar, clique em **Analisar PDF por link
+(sem API)** e cole um link HTTPS direto de uma publicação oficial. O
+ConvocaLivre solicita confirmação antes de baixar o arquivo, realiza
+a extração e busca de nome localmente e apresenta página, classificação
+indicativa e link para conferir o texto original.
+
+Essa opção **não descobre novos documentos por nome**: é preciso informar
+o link do PDF. A consulta não transmite o nome pesquisado como parâmetro
+para o servidor que hospeda o PDF, embora o site possa registrar o
+acesso e eventualmente outros dados de conexão. Não há monitoramento.
+Detalhes: [PDF_POR_LINK.md](PDF_POR_LINK.md).
