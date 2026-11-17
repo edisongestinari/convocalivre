@@ -89,6 +89,33 @@ class ExternalAuditTests(unittest.TestCase):
         for secret_name in names.values():
             self.assertNotIn(secret_name, serialized)
 
+    def test_page_scoped_negative_can_detect_false_positive(self):
+        blob = make_pdf("ANA PAULA SILVA foi convocada.")
+        manifest = {
+            "dataset_kind": "human_annotated_public_pdfs",
+            "sources": [{
+                "id": "a", "url": "https://example.invalid/a.pdf",
+                "cases": [{
+                    "id": "a1", "page_number": 1,
+                    "name_sha256": name_digest("Ana Paula Silva"),
+                    "expected": "convocacao",
+                }],
+            }],
+            "negative_pairs": [{
+                "id": "deliberately_wrong_negative", "target_case": "a1",
+                "in_source": "a", "page_number": 1,
+            }],
+        }
+        result = evaluate_public_pdfs(manifest, lambda _: blob)
+        self.assertEqual(result["name_presence"]["tp"], 1)
+        self.assertEqual(result["name_presence"]["fp"], 1)
+        negative = next(
+            item for item in result["case_results"]
+            if item["id"] == "deliberately_wrong_negative"
+        )
+        self.assertEqual(negative["predicted"], "name_present")
+        self.assertEqual(negative["scope"], "page")
+
     def test_unavailable_source_is_not_true_negative(self):
         manifest = {
             "dataset_kind": "human_annotated_public_pdfs",
