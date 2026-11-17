@@ -178,6 +178,7 @@ class StructuredContextTests(unittest.TestCase):
         previous, current = "\n".join(PREVIOUS), "\n".join(NEXT)
         result = infer_previous_page_continuation(previous, current, *locate(current))
         self.assertEqual(result["act_type"], "nomeacao")
+        self.assertEqual(result["act_context_page_offset"], -1)
         self.assertEqual(
             result["act_basis"],
             "adjacent_page_unfinished_portaria_named_recipient",
