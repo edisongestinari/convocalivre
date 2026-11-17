@@ -1,5 +1,20 @@
 # Histórico de versões
 
+## 0.5.0 — Consulta online sob demanda (experimental)
+
+- Adiciona **Consultar diarios online** em janela separada, com
+  código IBGE obrigatório e confirmação expressa antes de transmitir
+  o nome completo à API pública do Querido Diário.
+- Mostra até dez edições com data, município, trecho e link HTTPS,
+  sem inferir ato jurídico a partir de excertos remotos.
+- Faz uma consulta por clique, com timeout, limite de resposta e
+  rejeição de URLs de documentos não HTTPS.
+- Mantém busca em PDFs/TXT totalmente local e não implementa
+  monitoramento, notificações nem cadastro de nomes.
+- Inclui testes mockados de requisição, respostas, validação e falhas
+  de rede, além de documentação de privacidade e limites de cobertura.
+- **A disponibilidade da API externa ainda exige validação manual.**
+
 ## 0.4.1 — Indicador de pesquisa na interface
 
 - Mostra **Procurando...** e uma barra animada assim que a pesquisa começa.
