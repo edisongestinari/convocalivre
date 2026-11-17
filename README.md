@@ -1,4 +1,4 @@
-# ConvocaLivre (protótipo 0.3.2)
+# ConvocaLivre (protótipo 0.3.3)
 
 **Uma ferramenta aberta para encontrar indícios verificáveis de convocações e outros atos relacionados a nomes em textos e PDFs pesquisáveis de diários oficiais brasileiros.**
 
@@ -83,6 +83,20 @@ O comando abaixo baixa os documentos publicamente acessíveis apenas durante a e
 **Não compare os números com os 39 casos sintéticos como se fossem estimativas populacionais.** Consulte [o protocolo, as fontes e os limites](docs/PUBLIC_PDF_AUDIT.md).
 
 A [primeira auditoria executada em fontes reais](docs/PUBLIC_PDF_AUDIT_RESULTS_2026-11-16.md) registrou 5/10 PDFs acessíveis, 7/19 casos de referência avaliados e 4 falsos negativos de classificação de ato; leia a análise de viés e limitações antes de interpretar os números.
+
+## Contexto estruturado adicional em PDFs (0.3.3)
+
+Quando a correspondência do nome não possui um verbo diretamente associado,
+o modo de PDF pode utilizar **três estruturas estritamente reconhecidas**:
+convocação com comando explícito e cabeçalho de candidatos na mesma página;
+anexo de resultado final com classificação, inscrição e pontuação; e uma
+portaria de nomeação interrompida no fim de uma página que continua com
+destinatário inequívoco no início da página seguinte. Na ausência dos
+marcadores, retorna `indeterminado`.
+
+A evidência traz `act_basis` e linhas contextuais; nenhuma inferência
+confirma nomeação ou substitui conferência da publicação original.
+Veja [docs/STRUCTURED_CONTEXT.md](docs/STRUCTURED_CONTEXT.md).
 
 ## Testes
 
