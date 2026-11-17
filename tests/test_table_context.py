@@ -42,6 +42,45 @@ class TableContextTests(unittest.TestCase):
         self.assertEqual(result["act_context_lines"], [2, 3])
         self.assertTrue(result["requires_manual_review"])
 
+    def test_references_to_prior_edital_do_not_override_active_exclusion(self):
+        # Regression from a real *layout pattern*, using fictional candidate.
+        # A reference to "Edital de Convocacao 313/2026" does not mean the
+        # current numbered exclusion edital is itself a convocation.
+        right = [
+            "EDITAL Nº 314/2026 DE 04 DE NOVEMBRO",
+            "SUMULA: Exclui o candidato aprovado em CONCURSO PUBLICO",
+            "Edital de Abertura nº 001/2024.",
+            "O PREFEITO MUNICIPAL, no uso de suas atribuicoes:",
+            "EXCLUI o candidato abaixo relacionado da lista dos aprovados,",
+            "referente ao CONCURSO PUBLICO - Edital nº 001/2024 e",
+            "Edital de Convocacao nº 313/2026, publicado anteriormente,",
+            "motivo particular, desistindo da nomeacao.",
+            "CARGO: MOTORISTA - 40H",
+            "3520         ANA PAULA SILVA                     [CPF]",
+        ]
+        left = [
+            "PORTARIA 44/2026", "CONVOCA outro servidor", "Texto externo",
+            "Texto externo", "Texto externo", "Texto externo",
+            "AVISO DE LICITACAO Nº 99/2026", "Texto externo",
+            "Texto externo", "Texto externo",
+        ]
+        result = infer_for(make_layout(right, left))
+        self.assertIsNotNone(result)
+        self.assertEqual(result["act_type"], "desistencia_exclusao")
+        self.assertEqual(result["act_context_lines"], [2, 5])
+        self.assertTrue(result["requires_manual_review"])
+
+    def test_standalone_second_edital_still_abstains(self):
+        right = [
+            "EDITAL Nº 314/2026",
+            "SUMULA: EXCLUI candidato da lista",
+            "EXCLUI o candidato aprovado",
+            "EDITAL Nº 315/2026",
+            "CARGO: MOTORISTA",
+            "3520         ANA PAULA SILVA",
+        ]
+        self.assertIsNone(infer_for(make_layout(right)))
+
     def test_does_not_borrow_exclusion_from_other_column(self):
         right = [
             "EDITAL Nº 314/2026", "LISTA DE CANDIDATOS", "SEM ALTERACOES",
