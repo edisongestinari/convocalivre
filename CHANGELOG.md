@@ -1,5 +1,19 @@
 # Histórico de versões
 
+## 0.5.1 — Consulta de PDF público direto, sem API
+
+- Inclui o botão **Analisar PDF por link (sem API)** na janela de
+  consulta online como alternativa quando o Querido Diário não responde.
+- Baixa somente o PDF informado pelo usuário, com consentimento,
+  HTTPS obrigatório, sem redirecionamentos, até 25 MB e prazo limitado.
+- Analisa temporariamente o PDF no computador e apresenta página,
+  tipo de ato e indicador; preserva a revisão humana.
+- Mostra erros diferenciados para 403, 404, redirecionamento,
+  retorno que não é PDF e falhas de rede.
+- Melhora a mensagem de erro da API para não atribuir automaticamente
+  a falha à conexão de internet do usuário.
+- Adiciona testes simulados sem rede e documentação de privacidade.
+
 ## 0.5.0 — Consulta online sob demanda (experimental)
 
 - Adiciona **Consultar diarios online** em janela separada, com

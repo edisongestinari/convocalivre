@@ -100,7 +100,8 @@ def _read_json(url: str, opener=urlopen) -> dict:
         ) from None
     except (URLError, TimeoutError, OSError):
         raise OnlineSearchError(
-            "Nao foi possivel conectar a API. Confira sua internet e tente novamente."
+            "Servico do Querido Diario indisponivel ou falha de conexao segura. "
+            "Isso nao significa que sua internet ou o ConvocaLivre falharam."
         ) from None
     if len(payload) > MAX_RESPONSE_BYTES:
         raise OnlineSearchError("Resposta da API acima do limite permitido.")

@@ -121,13 +121,23 @@ def open_online_dialog(parent, person_name: str) -> None:
         actions, text="Abrir site Querido Diário",
         command=lambda: webbrowser.open("https://queridodiario.org.br/"),
     ).pack(side="left", padx=(12, 0))
+    ttk.Button(
+        actions, text="Analisar PDF por link (sem API)",
+        command=lambda: open_pdf_link(),
+    ).pack(side="left", padx=(12, 0))
     ttk.Label(
         outer, text=(
-            "Se a API não responder, use o site do Querido Diário ou "
-            "consulte diretamente o órgão responsável pela publicação. "
-            "Falha de conexão não significa ausência do nome."
+            "Se a API não responder, utilize 'Analisar PDF por link (sem API)' "
+            "quando tiver um endereço HTTPS direto de publicação, ou consulte "
+            "o site original. Falha de conexão não significa ausência do nome."
         ), wraplength=870,
     ).pack(anchor="w", pady=(5, 0))
+
+    def open_pdf_link():
+        # This path is independent of Querido Diario. The URL is supplied
+        # explicitly and the PDF is processed locally after confirmation.
+        from .remote_pdf_gui import open_remote_pdf_dialog
+        open_remote_pdf_dialog(dialog, person_name)
 
     def select_result(_event=None):
         selection = tree.selection()
@@ -211,7 +221,7 @@ def open_online_dialog(parent, person_name: str) -> None:
             return
         approved = messagebox.askyesno(
             "Autorizar consulta externa?",
-            "O seu nome completo será enviado à API pública do Querido Diário "
+            "O nome pesquisado será enviado à API pública do Querido Diário "
             "para pesquisar possíveis menções no município escolhido.\n\n"
             "Esta consulta não cria monitoramento, cadastro ou alertas.\n\n"
             "Deseja continuar?",

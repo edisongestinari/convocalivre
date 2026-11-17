@@ -1,4 +1,4 @@
-# ConvocaLivre 0.5.0 — MVP local + consulta online experimental
+# ConvocaLivre 0.5.1 — MVP local + consulta online experimental
 
 **Uma ferramenta aberta para encontrar indícios verificáveis de convocações e outros atos relacionados a nomes em textos e PDFs pesquisáveis de diários oficiais brasileiros.**
 
@@ -42,6 +42,28 @@ Os relatórios de busca, por outro lado, podem conter dados pessoais:
 não os publique indiscriminadamente.
 
 [Guia de instalação e utilização no Windows](docs/GUIA_USUARIO.md).
+
+## Alternativa quando a API não responde (0.5.1)
+
+A API de busca do Querido Diário apresentou indisponibilidade de rede e
+TLS em 17/11/2026. **Isso não significa que sua internet ou o programa
+de busca local estejam com defeito.**
+
+Na janela **Consultar diarios online (beta)**, use
+**Analisar PDF por link (sem API)**. Cole o endereço HTTPS direto de uma
+edição oficial, autorize o download temporário, e o ConvocaLivre
+executará a busca e classificação no próprio computador.
+
+Por exemplo, uma edição já utilizada em regressões do projeto:
+https://www.umuaramailustrado.com.br/edicoes/2026/novembro_2026/digital_05_11_2026.pdf
+
+Essa alternativa **não descobre automaticamente novos PDFs**, não
+transmite o nome como parâmetro de pesquisa e não envia alertas;
+ela somente consulta o arquivo informado. O servidor de origem pode
+registrar o endereço IP de quem fizer o download. Links que redirecionam
+ou respostas que não são PDFs são recusados por segurança.
+
+Veja [o passo a passo](docs/PDF_POR_LINK.md).
 
 ## Nova consulta de diários online sob demanda (0.5.0, experimental)
 
