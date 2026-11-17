@@ -257,6 +257,36 @@
       "id": "NEG-PINHALZINHO-FERNAO",
       "target_case": "PINHALZINHO-NOMEACAO-TABELA",
       "in_source": "fernao_sp_2026_05_29"
+    },
+    {
+      "id": "NEG-CAJAMAR-PORTARIA-OUTRA-PAGINA",
+      "target_case": "CAJAMAR-NOMEACAO-PORTARIA",
+      "in_source": "cajamar_sp_2026_06_16",
+      "page_number": 1
+    },
+    {
+      "id": "NEG-CAJAMAR-LICENCA-OUTRA-PAGINA",
+      "target_case": "CAJAMAR-LICENCA-NEUTRO",
+      "in_source": "cajamar_sp_2026_06_16",
+      "page_number": 3
+    },
+    {
+      "id": "NEG-CAJAMAR-1697-NOMEACAO-OUTRA-PAGINA",
+      "target_case": "CAJAMAR-NOMEACAO-PAGINA-SEGUINTE",
+      "in_source": "cajamar_sp_2026_06_19",
+      "page_number": 2
+    },
+    {
+      "id": "NEG-CAJAMAR-1697-LICENCA-OUTRA-PAGINA",
+      "target_case": "CAJAMAR-LICENCA-CONTROLE",
+      "in_source": "cajamar_sp_2026_06_19",
+      "page_number": 2
+    },
+    {
+      "id": "NEG-FERNAO-HOMOLOG-OUTRA-PAGINA",
+      "target_case": "FERNAO-HOMOLOG-COZINHEIRO",
+      "in_source": "fernao_sp_2026_05_29",
+      "page_number": 1
     }
   ]
 }
