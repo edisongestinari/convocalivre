@@ -1,0 +1,176 @@
+{
+  "dataset_kind": "human_annotated_public_pdfs",
+  "note": "Amostra intencional, nao aleatoria. Nomes substituidos por digests SHA-256; os nomes sao recuperados em memoria do PDF. Referencias verificadas em publicacoes oficiais ou espelhos municipais. Sem endosso juridico.",
+  "reviewed_on": "2026-11-16",
+  "sources": [
+    {
+      "id": "arapoti_pr_2026_11_13",
+      "municipality": "Arapoti/PR",
+      "url": "https://diario.arapoti.pr.gov.br/uploads/diario_oficial/62493/X27aXt2wF2PM_D_Ay9EnAHj1Xz6QQ1Ee.pdf",
+      "category": "diario_municipal_multisection",
+      "cases": [
+        {
+          "id": "ARAPOTI-CONVOCACAO-TABELA",
+          "page_number": 4,
+          "name_sha256": "86008451fbfe220476ced19033bb24731b0e454db3fa743ec29c430beac5814f",
+          "expected": "convocacao",
+          "reference": "Edital de convocacao para exame medico admissional 86/2026"
+        }
+      ]
+    },
+    {
+      "id": "sabaudia_pr_2026_11_12",
+      "municipality": "Sabaudia/PR",
+      "url": "https://www.sabaudia.pr.gov.br/public/admin/globalarq/diario-oficial/3dee14ef9356bea2a8daf127717c436d.pdf",
+      "category": "diario_municipal_tabelas",
+      "cases": [
+        {
+          "id": "SABAUDIA-NOMEACAO-TABELA",
+          "page_number": 1,
+          "name_sha256": "2641f3fa01ada9e4001944ffd764f85fac5696092339d03263bb9f28db5e5fb7",
+          "expected": "nomeacao",
+          "reference": "Decreto 272/2026, art. 1"
+        },
+        {
+          "id": "SABAUDIA-LICENCA-NEUTRO",
+          "page_number": 2,
+          "name_sha256": "993fa8b241d48e2119aea4505feb6d02c12d6701daef8b25b3917bce93d28239",
+          "expected": "indeterminado",
+          "reference": "Portaria 519/2026, concessao de licenca maternidade (nao nomeacao)"
+        }
+      ]
+    },
+    {
+      "id": "joinville_sc_2026_09_23",
+      "municipality": "Joinville/SC",
+      "url": "https://www.joinville.sc.gov.br/public/portaladm/pdf/jornal/9e87f8599a57c01f318d3228f80cffa4.pdf",
+      "category": "anexo_classificacao_30_paginas",
+      "cases": [
+        {
+          "id": "JOINVILLE-HOMOLOGACAO-TABELA",
+          "page_number": 1,
+          "name_sha256": "de5cef4d180a14d6c4b4b2f7c382dd867860f6a8dad96f14c7c39457d952c496",
+          "expected": "resultado_homologacao",
+          "reference": "Anexo I homologacao do resultado final e classificacao - ampla concorrencia"
+        }
+      ]
+    },
+    {
+      "id": "cajamar_sp_2026_06_16",
+      "municipality": "Cajamar/SP",
+      "url": "https://cajamar.sp.gov.br/diariooficial/wp-content/uploads/sites/3/edicao-no-1694-2.pdf",
+      "category": "diario_portarias_em_sequencia",
+      "cases": [
+        {
+          "id": "CAJAMAR-NOMEACAO-PORTARIA",
+          "page_number": 3,
+          "name_sha256": "59ecbcb2ba2a0f9c766a1f542fcea402f257331cc19be82c805736efa8b36ccb",
+          "expected": "nomeacao",
+          "reference": "Portaria 2173/2026"
+        },
+        {
+          "id": "CAJAMAR-LICENCA-NEUTRO",
+          "page_number": 2,
+          "name_sha256": "4278d852f706d022e4260fa4d91c1c5193ab1a8f82a89626ba417c5fe177e904",
+          "expected": "indeterminado",
+          "reference": "Portaria 2168/2026, licenca-premio (nao nomeacao)"
+        }
+      ]
+    },
+    {
+      "id": "pinhalzinho_sp_2026_11_06",
+      "municipality": "Pinhalzinho/SP",
+      "url": "https://www.pinhalzinho.sp.gov.br/public/admin/globalarq/diario-eletronico/diario/a3xsTARAcwZ2A232.pdf",
+      "category": "portaria_nomeacao_tabela",
+      "cases": [
+        {
+          "id": "PINHALZINHO-NOMEACAO-TABELA",
+          "page_number": 3,
+          "name_sha256": "9b08eb301c0b7fbc8dee2e48c5099cf3184847cfd7f86f1baf7afc377d9b0643",
+          "expected": "nomeacao",
+          "reference": "Portaria 3236/2026, nomeacao em tabela"
+        }
+      ]
+    },
+    {
+      "id": "itai_sp_2026_11_13",
+      "municipality": "Itai/SP",
+      "url": "https://www.itai.sp.gov.br/public/admin/globalarq/diario-eletronico/diario/32Tx22AwRc3aAsZA.pdf",
+      "category": "varias_portarias_mesma_pagina",
+      "cases": [
+        {
+          "id": "ITAI-NOMEACAO-443",
+          "page_number": 3,
+          "name_sha256": "478ccd7b77a48dfcc9178c93279b5a2a046f8dc1e0ca746732657f547d2b4fca",
+          "expected": "nomeacao",
+          "reference": "Portaria 443"
+        },
+        {
+          "id": "ITAI-NOMEACAO-444",
+          "page_number": 3,
+          "name_sha256": "3b820296ae8d29c32890204b6fa996747fc65fadeef38aae3b61242862dd4593",
+          "expected": "nomeacao",
+          "reference": "Portaria 444"
+        },
+        {
+          "id": "ITAI-NOMEACAO-445",
+          "page_number": 3,
+          "name_sha256": "f1cf0734a9102a9d93e51941e267b564578b2607be66eee3a741fbcb8709898a",
+          "expected": "nomeacao",
+          "reference": "Portaria 445"
+        },
+        {
+          "id": "ITAI-NOMEACAO-446",
+          "page_number": 3,
+          "name_sha256": "198b8361248f8c24a41f2d58c8f8cbfe49747469eed07012607034ef5f7b708a",
+          "expected": "nomeacao",
+          "reference": "Portaria 446"
+        },
+        {
+          "id": "ITAI-NOMEACAO-447",
+          "page_number": 3,
+          "name_sha256": "88c0a92e1653e202a2e9d6f83dc5c1ea6fd36b14b4a7f6da45300c275c6976ab",
+          "expected": "nomeacao",
+          "reference": "Portaria 447"
+        }
+      ]
+    },
+    {
+      "id": "cruzeiro_oeste_pr_2026_11_05",
+      "municipality": "Cruzeiro do Oeste/PR",
+      "url": "https://www.umuaramailustrado.com.br/edicoes/2026/novembro_2026/digital_05_11_2026.pdf",
+      "category": "jornal_multicoluna_40_paginas",
+      "cases": [
+        {
+          "id": "CRUZEIRO-EXCLUSAO-MULTICOLUNA",
+          "page_number": 13,
+          "name_sha256": "8fff96d74f8fa26947af3aace6da95f36e1f8d99e564f96b148128dba45aca43",
+          "expected": "desistencia_exclusao",
+          "reference": "Edital 314/2026, exclusao do concurso"
+        }
+      ]
+    }
+  ],
+  "negative_pairs": [
+    {
+      "id": "NEG-SABAUDIA-ARAPOTI",
+      "target_case": "SABAUDIA-NOMEACAO-TABELA",
+      "in_source": "arapoti_pr_2026_11_13"
+    },
+    {
+      "id": "NEG-ARAPOTI-SABAUDIA",
+      "target_case": "ARAPOTI-CONVOCACAO-TABELA",
+      "in_source": "sabaudia_pr_2026_11_12"
+    },
+    {
+      "id": "NEG-JOINVILLE-CAJAMAR",
+      "target_case": "JOINVILLE-HOMOLOGACAO-TABELA",
+      "in_source": "cajamar_sp_2026_06_16"
+    },
+    {
+      "id": "NEG-CAJAMAR-JOINVILLE",
+      "target_case": "CAJAMAR-NOMEACAO-PORTARIA",
+      "in_source": "joinville_sc_2026_09_23"
+    }
+  ]
+}
