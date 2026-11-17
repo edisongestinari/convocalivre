@@ -1,8 +1,45 @@
-# ConvocaLivre (protótipo 0.3.3)
+# ConvocaLivre 0.4.0 — MVP local
 
 **Uma ferramenta aberta para encontrar indícios verificáveis de convocações e outros atos relacionados a nomes em textos e PDFs pesquisáveis de diários oficiais brasileiros.**
 
 > ⚠️ Protótipo inicial. NÃO consulta automaticamente sites oficiais, NÃO envia alertas, NÃO comprova nomeação, nem substitui verificação humana. O arquivo de exemplo é inteiramente fictício. PDFs digitalizados sem texto ainda não são reconhecidos.
+
+## Agora com interface gráfica (MVP local 0.4.0)
+
+A versão 0.4.0 permite ao usuário comum consultar uma pasta de PDFs e
+TXT sem escrever código. **É uma ferramenta local, não um serviço de alertas
+automáticos nem um buscador de sites oficiais.**
+
+### Abrir a interface no Windows
+
+Após instalar a versão indicada abaixo:
+
+~~~powershell
+python -m convocalivre gui
+~~~
+
+Na janela, escolha o nome completo e os PDFs/TXT, clique em
+**Buscar nome**, veja as hipóteses na tabela e abra o PDF original
+na página indicada. É possível exportar o resultado para JSON local.
+
+### Buscar em uma pasta pelo PowerShell
+
+~~~powershell
+python -m convocalivre batch "$HOME\Downloads\Diarios" --name "MARIA DE SOUSA" --output "$HOME\resultado_lote.json"
+~~~
+
+### Diagnosticar PDFs não pesquisáveis
+
+~~~powershell
+python -m convocalivre diagnose "$HOME\Downloads\diario.pdf" --output "$HOME\diagnostico.json"
+~~~
+
+O diagnóstico contém estatísticas de extração, **não nomes nem trechos**.
+Uma página sem texto extraível não prova que o PDF seja um scan.
+Os relatórios de busca, por outro lado, podem conter dados pessoais:
+não os publique indiscriminadamente.
+
+[Guia de instalação e utilização no Windows](docs/GUIA_USUARIO.md).
 
 ## Problema público
 

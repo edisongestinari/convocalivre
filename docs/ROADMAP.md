@@ -7,8 +7,18 @@
 - [x] Testes unitários e CI no GitHub Actions
 - [x] Classificação heurística conservadora de convocação, nomeação, exclusão/desistência e resultado/homologação
 - [x] Inferência conservadora de atos em linhas de tabela com cabeçalho de edital na mesma coluna, com casos sintéticos adversariais
-- [ ] Retestar inferência de tabela 0.3.1 na publicação pública que motivou o diagnóstico
+- [x] Retestar associação de tabela nas versões 0.3.2 e 0.3.3 com o PDF real de Cruzeiro do Oeste
 - [x] Corpus rotulado com 39 exemplos sintéticos e relatório reprodutível de FP/FN por classe
+
+## MVP local — versão 0.4.0
+- [x] Interface gráfica de uso local para Windows/Python (Tkinter)
+- [x] Consulta em lote de até 100 PDFs/TXT e tratamento por arquivo
+- [x] Diagnóstico sanitizado da qualidade da camada textual de cada PDF
+- [x] Códigos de erro sanitizados para fontes públicas na auditoria
+- [x] Guia em português para instalação, pesquisa e interpretação cautelosa
+- [ ] Validar abertura da interface graficamente em Windows real de usuário
+- [ ] Resolver nomes não recuperados do PDF de Sabáudia, sem publicar informações pessoais
+- [ ] Implantar busca em fontes oficiais e alertas opcionais com consentimento e limites de acesso
 
 ## Antes de buscar usuários
 - [ ] Fazer avaliação independente com publicações públicas e casos inéditos, sem expor dados privados
