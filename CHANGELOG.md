@@ -1,5 +1,17 @@
 # Histórico de versões
 
+## 0.4.1 — Indicador de pesquisa na interface
+
+- Mostra **Procurando...** e uma barra animada assim que a pesquisa começa.
+- Atualiza o texto de atividade ao iniciar/concluir cada PDF/TXT, sem
+  inventar porcentagem para a leitura de páginas.
+- Mantém a janela responsiva por execução em thread, sem manipular widgets
+  fora da thread principal.
+- Desabilita entrada de nome, seleção e execução repetida durante a busca;
+  restaura os controles ao terminar ou ocorrer erro.
+- O classificador e o conteúdo dos relatórios permanecem inalterados.
+
+
 ## 0.4.0 — MVP local com interface (em validação)
 
 - **Interface gráfica opcional** usando Tkinter, sem envio de documentos
