@@ -1,4 +1,4 @@
-# ConvocaLivre 0.4.0 — MVP local
+# ConvocaLivre 0.4.1 — MVP local
 
 **Uma ferramenta aberta para encontrar indícios verificáveis de convocações e outros atos relacionados a nomes em textos e PDFs pesquisáveis de diários oficiais brasileiros.**
 
@@ -19,7 +19,9 @@ python -m convocalivre gui
 ~~~
 
 Na janela, escolha o nome completo e os PDFs/TXT, clique em
-**Buscar nome**, veja as hipóteses na tabela e abra o PDF original
+**Buscar nome**. Enquanto a ferramenta pesquisa, a mensagem **Procurando...**
+e uma barra animada indicam atividade; o arquivo corrente é exibido.
+Ao concluir, veja as hipóteses na tabela e abra o PDF original
 na página indicada. É possível exportar o resultado para JSON local.
 
 ### Buscar em uma pasta pelo PowerShell
