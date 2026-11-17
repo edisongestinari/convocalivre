@@ -37,6 +37,7 @@ def launch() -> None:
             self.root.minsize(820, 530)
             self.name = tk.StringVar()
             self.status = tk.StringVar(value="Selecione um ou mais arquivos PDF ou TXT.")
+            self.search_activity = tk.StringVar(value="")
             self.paths: list[Path] = []
             self.scan_result: dict | None = None
             self.row_paths: dict[str, tuple[Path, int | None]] = {}
@@ -65,12 +66,18 @@ def launch() -> None:
 
             controls = ttk.Frame(outer)
             controls.pack(fill="x", pady=(0, 10))
-            ttk.Button(controls, text="Adicionar PDFs/TXT",
-                       command=self.add_files).pack(side="left", padx=(0, 6))
-            ttk.Button(controls, text="Adicionar pasta",
-                       command=self.add_folder).pack(side="left", padx=(0, 6))
-            ttk.Button(controls, text="Limpar lista",
-                       command=self.clear_files).pack(side="left", padx=(0, 6))
+            self.add_files_button = ttk.Button(
+                controls, text="Adicionar PDFs/TXT", command=self.add_files
+            )
+            self.add_files_button.pack(side="left", padx=(0, 6))
+            self.add_folder_button = ttk.Button(
+                controls, text="Adicionar pasta", command=self.add_folder
+            )
+            self.add_folder_button.pack(side="left", padx=(0, 6))
+            self.clear_button = ttk.Button(
+                controls, text="Limpar lista", command=self.clear_files
+            )
+            self.clear_button.pack(side="left", padx=(0, 6))
             self.run_button = ttk.Button(
                 controls, text="Buscar nome", command=self.run
             )
@@ -84,9 +91,26 @@ def launch() -> None:
             ttk.Label(outer, textvariable=self.status, wraplength=990).pack(
                 anchor="w", pady=(0, 9)
             )
-            ttk.Label(outer, text="Resultados (todos exigem revisao humana):").pack(
-                anchor="w", pady=(0, 5)
+
+            # Hide at rest. When searching, show an animated indicator rather
+            # than guessing a percentage for PDFs with unknown extraction cost.
+            self.activity_frame = ttk.Frame(outer)
+            self.activity_label = ttk.Label(
+                self.activity_frame,
+                textvariable=self.search_activity,
+                font=("Segoe UI", 10, "bold"),
+                wraplength=980,
             )
+            self.activity_label.pack(fill="x", anchor="w", pady=(0, 5))
+            self.activity_bar = ttk.Progressbar(
+                self.activity_frame, mode="indeterminate", length=350
+            )
+            self.activity_bar.pack(fill="x")
+
+            self.results_heading = ttk.Label(
+                outer, text="Resultados (todos exigem revisao humana):"
+            )
+            self.results_heading.pack(anchor="w", pady=(0, 5))
             content = ttk.Frame(outer)
             content.pack(fill="both", expand=True)
             columns = ("arquivo", "pagina", "resultado", "indicador")
@@ -181,8 +205,18 @@ def launch() -> None:
                 return
             self.running = True
             self.run_button.state(["disabled"])
+            self.run_button.configure(text="Procurando...")
             self.export_button.state(["disabled"])
-            self.status.set(f"Analisando {len(self.paths)} documento(s) localmente...")
+            self.add_files_button.state(["disabled"])
+            self.add_folder_button.state(["disabled"])
+            self.clear_button.state(["disabled"])
+            self.name_entry.state(["disabled"])
+            self.status.set(f"Pesquisa iniciada em {len(self.paths)} documento(s).")
+            self.search_activity.set("Procurando nome nos documentos. Aguarde a conclusão...")
+            self.activity_frame.pack(
+                fill="x", pady=(0, 10), before=self.results_heading
+            )
+            self.activity_bar.start(15)
             self.scan_result = None
             selected_files = self.paths[:]
             for item in self.tree.get_children():
@@ -190,8 +224,17 @@ def launch() -> None:
             self.row_paths = {}
 
             def worker():
+                def on_progress(index, total, filename, phase):
+                    # Worker only sends messages; every Tk widget is updated
+                    # on the main GUI thread by poll().
+                    self.messages.put((
+                        "progress", (index, total, filename, phase)
+                    ))
+
                 try:
-                    report = analyze_local_files(selected_files, name)
+                    report = analyze_local_files(
+                        selected_files, name, on_progress=on_progress
+                    )
                     self.messages.put(("ok", report))
                 except Exception:
                     # Do not display sensitive parser exception content.
@@ -201,13 +244,35 @@ def launch() -> None:
             self.root.after(100, self.poll)
 
         def poll(self):
-            try:
-                outcome, report = self.messages.get_nowait()
-            except Empty:
-                self.root.after(100, self.poll)
-                return
+            while True:
+                try:
+                    outcome, report = self.messages.get_nowait()
+                except Empty:
+                    self.root.after(100, self.poll)
+                    return
+                if outcome == "progress":
+                    number, total, filename, phase = report
+                    if phase == "start":
+                        self.search_activity.set(
+                            f"Procurando no arquivo {number} de {total}: {filename}"
+                        )
+                    else:
+                        self.search_activity.set(
+                            f"{number} de {total} arquivo(s) verificado(s). "
+                            "Continuando a pesquisa..."
+                        )
+                    continue
+                break
+
             self.running = False
+            self.activity_bar.stop()
+            self.activity_frame.pack_forget()
             self.run_button.state(["!disabled"])
+            self.run_button.configure(text="Buscar nome")
+            self.add_files_button.state(["!disabled"])
+            self.add_folder_button.state(["!disabled"])
+            self.clear_button.state(["!disabled"])
+            self.name_entry.state(["!disabled"])
             if outcome != "ok":
                 self.status.set("A consulta falhou. Verifique os arquivos.")
                 return
