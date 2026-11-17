@@ -25,6 +25,9 @@
 - [x] Solicitar consentimento explícito antes de transmitir o nome
 - [x] Exigir código IBGE e limitar consultas/quantidade de resultados
 - [x] Separar possíveis menções online da classificação local de atos
+- [x] Tratar a falha real da API como indisponibilidade externa e melhorar o aviso
+- [x] Criar consulta manual de um único PDF público por URL HTTPS, sem API
+- [ ] Validar leitura direta de PDF por link no Windows do usuário
 - [ ] Confirmar funcionamento real da API no Windows do usuário
 - [ ] Avaliar outras fontes, intervalos de datas, cobertura e deduplicação
 - [ ] Criar monitoramento periódico apenas com consentimento e controles
