@@ -149,6 +149,72 @@
           "reference": "Edital 314/2026, exclusao do concurso"
         }
       ]
+    },
+    {
+      "id": "fernao_sp_2026_10_14",
+      "municipality": "Fernão/SP",
+      "url": "https://www.fernao.sp.gov.br/concurso/download/637/",
+      "category": "edital_convocacao_pagina_unica",
+      "cases": [
+        {
+          "id": "FERNAO-CONVOCACAO-14",
+          "page_number": 1,
+          "name_sha256": "700a6425334e27721b774c56f8b9d581db0f617948133307d7b74d1ea365dc03",
+          "expected": "convocacao",
+          "reference": "Edital de Convocacao 14/2026 - processo seletivo"
+        }
+      ]
+    },
+    {
+      "id": "fernao_sp_2026_05_29",
+      "municipality": "Fernão/SP",
+      "url": "https://www.fernao.sp.gov.br/concurso/download/616/",
+      "category": "edital_homologacao_anexo_classificacao",
+      "cases": [
+        {
+          "id": "FERNAO-HOMOLOG-COZINHEIRO",
+          "page_number": 2,
+          "name_sha256": "154731c53a643a1feac725009285636c0827ae355a83816e728dbd4e472f6319",
+          "expected": "resultado_homologacao",
+          "reference": "Edital de Homologacao final, Anexo I - Cozinheiro"
+        },
+        {
+          "id": "FERNAO-HOMOLOG-FISCAL",
+          "page_number": 2,
+          "name_sha256": "be16fdb38f8865701228923f2abefad53a2f6962087b09ad754680f3e5b03819",
+          "expected": "resultado_homologacao",
+          "reference": "Edital de Homologacao final, Anexo I - Fiscal Tributario"
+        }
+      ]
+    },
+    {
+      "id": "cajamar_sp_2026_06_19",
+      "municipality": "Cajamar/SP",
+      "url": "https://cajamar.sp.gov.br/diariooficial/wp-content/uploads/sites/3/edicao-1697-3.pdf",
+      "category": "portaria_nomeacao_continua_proxima_pagina",
+      "cases": [
+        {
+          "id": "CAJAMAR-NOMEACAO-PAGINA-SEGUINTE",
+          "page_number": 5,
+          "name_sha256": "11e95edd3e0b2f324f1f0617104165a2c5626f8f7c362ac4220f2a0346c25705",
+          "expected": "nomeacao",
+          "reference": "Portaria 2212/2026 (inicio na pagina anterior)"
+        },
+        {
+          "id": "CAJAMAR-EXONERACAO-CONTROLE",
+          "page_number": 5,
+          "name_sha256": "5dc35c3a2bf069277867ad7912ef974c6cf2c974d75d474da4273347b817f573",
+          "expected": "indeterminado",
+          "reference": "Portaria 2213/2026 (exoneracao, fora das 4 categorias)"
+        },
+        {
+          "id": "CAJAMAR-LICENCA-CONTROLE",
+          "page_number": 5,
+          "name_sha256": "d71946ce2933f28f6eb3a05cb586223453d1a8f7624f76d50fbce1a0ffc42b2",
+          "expected": "indeterminado",
+          "reference": "Portaria 2216/2026 - licenca para assuntos particulares"
+        }
+      ]
     }
   ],
   "negative_pairs": [
@@ -171,6 +237,26 @@
       "id": "NEG-CAJAMAR-JOINVILLE",
       "target_case": "CAJAMAR-NOMEACAO-PORTARIA",
       "in_source": "joinville_sc_2026_09_23"
+    },
+    {
+      "id": "NEG-FERNAO-CAJAMAR",
+      "target_case": "FERNAO-CONVOCACAO-14",
+      "in_source": "cajamar_sp_2026_06_16"
+    },
+    {
+      "id": "NEG-CAJAMAR-FERNAO",
+      "target_case": "CAJAMAR-NOMEACAO-PORTARIA",
+      "in_source": "fernao_sp_2026_10_14"
+    },
+    {
+      "id": "NEG-FERNAO-PINHALZINHO",
+      "target_case": "FERNAO-HOMOLOG-COZINHEIRO",
+      "in_source": "pinhalzinho_sp_2026_11_06"
+    },
+    {
+      "id": "NEG-PINHALZINHO-FERNAO",
+      "target_case": "PINHALZINHO-NOMEACAO-TABELA",
+      "in_source": "fernao_sp_2026_05_29"
     }
   ]
 }
