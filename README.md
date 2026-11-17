@@ -1,10 +1,12 @@
 # ConvocaLivre 0.5.1 — MVP local + consulta online experimental
 
-**Uma ferramenta aberta para encontrar indícios verificáveis de convocações e outros atos relacionados a nomes em textos e PDFs pesquisáveis de diários oficiais brasileiros.**
+**Software cívico open source para pesquisar nomes em diários oficiais brasileiros e apresentar evidências de possíveis atos administrativos — sem confundir menção com nomeação confirmada.**
+
+**Projeto em pré-alfa:** [impacto e evidências](docs/IMPACTO_E_EVIDENCIAS.md) · [demonstração reproduzível](docs/DEMONSTRACAO.md) · [roteiro de candidatura Codex for Open Source](docs/CANDIDATURA_CODEX_FOR_OSS.md) · [limitações](docs/ROADMAP.md)
 
 > ⚠️ Protótipo inicial. Consultas locais continuam offline; a nova consulta à API do Querido Diário é opcional, realizada somente após consentimento e depende da disponibilidade do serviço. NÃO monitora sites automaticamente, NÃO envia alertas, NÃO comprova nomeação, nem substitui verificação humana. O arquivo de exemplo é inteiramente fictício. PDFs digitalizados sem texto ainda não são reconhecidos.
 
-## Agora com interface gráfica (MVP local 0.4.0)
+## Interface gráfica e pesquisa local (MVP)
 
 A versão 0.4.0 permite ao usuário comum consultar uma pasta de PDFs e
 TXT sem escrever código. **A busca por arquivos continua local; há uma pesquisa online opcional
@@ -12,11 +14,15 @@ em uma API pública, mas não existe serviço de alertas automáticos.**
 
 ### Abrir a interface no Windows
 
-Após instalar a versão indicada abaixo:
+Em Windows, com Python 3.10 ou superior:
 
 ~~~powershell
+python -m pip install --upgrade "https://github.com/edisongestinari/convocalivre/archive/refs/heads/main.zip"
 python -m convocalivre gui
 ~~~
+
+Para uma demonstração reproduzível com documentos fictícios, consulte
+[DEMONSTRACAO.md](docs/DEMONSTRACAO.md).
 
 Na janela, escolha o nome completo e os PDFs/TXT, clique em
 **Buscar nome**. Enquanto a ferramenta pesquisa, a mensagem **Procurando...**
@@ -82,6 +88,22 @@ O código IBGE de Cruzeiro do Oeste/PR é **4106605**. Para outros
 municípios, consulte os códigos oficiais do IBGE. [Guia e aviso de
 privacidade](docs/CONSULTA_ONLINE.md).
 
+## Reproduza em minutos
+
+Sem PDF real e sem enviar informações pessoais:
+
+~~~powershell
+git clone https://github.com/edisongestinari/convocalivre.git
+cd convocalivre
+python -m pip install -e .
+python -m unittest discover -s tests -v
+python -m convocalivre examples/publicacao_ficticia.txt --name "MARIA DE SOUSA"
+~~~
+
+A suíte usa amostras **fictícias**. O conjunto de PDFs públicos usado na
+pesquisa é limitado e **não fornece uma estimativa de precisão**.
+Leia [os resultados e limitações](docs/PUBLIC_PDF_AUDIT_RETEST_2026-11-17.md).
+
 ## Problema público
 
 Pessoas aprovadas em concursos podem depender de publicações espalhadas por diferentes diários oficiais. Uma busca por palavra-chave pode gerar falsos positivos ou perder variações de acentuação. Queremos criar uma biblioteca reusável com proveniência, verificabilidade e proteção dos dados pessoais.
@@ -91,7 +113,9 @@ Pessoas aprovadas em concursos podem depender de publicações espalhadas por di
 - Pesquisa exata por nome completo, tolerante a acentos e variação de espaços, em TXT UTF-8 ou PDF com texto pesquisável.
 - Distinção entre **nome mencionado** e **possível ato relacionado**; nenhuma conclusão jurídica automática.
 - Trecho de evidência, posições no documento e hash SHA-256 do texto analisado.
-- Análise **offline**: nomes não são transmitidos a serviços externos.
+- Pesquisa **local e offline** em documentos já baixados; a **opção online beta**
+  é separada e, quando autorizada, pode transmitir o nome à API de terceiros.
+  O modo PDF por URL faz download do arquivo e executa a busca localmente.
 - Saída JSON para integração futura com outras ferramentas cívicas. Em PDFs, retorna página física (iniciando em 1), trecho, posições no texto extraído, hash dos bytes originais e aviso para páginas sem texto.
 
 ## Instalação (Python 3.10+)
@@ -190,7 +214,7 @@ Não publique resultados que contenham nomes reais, nem cadastros, tokens, diár
 
 O [reteste exploratório de 0.3.3](docs/PUBLIC_PDF_AUDIT_RETEST_2026-11-17.md) mostra 8/8 classificações corretas **apenas nos casos efetivamente avaliados** (8/19 do manifesto). Os exemplos motivaram as regras; esse resultado não mede a acurácia real do produto. 
 
-Veja [docs/ROADMAP.md](docs/ROADMAP.md). Já existe uma integração **experimental e sob demanda** com a API pública [Querido Diário](https://docs.queridodiario.ok.org.br/pt-br/latest/utilizando/api-publica.html). Ainda faltam validação de disponibilidade real, testes independentes, monitoramento consentido e cobertura de fontes adicionais; também precisamos testar precisão em documentos consentidos e atender usuários reais antes de solicitar bolsas de manutenção.
+Veja [docs/ROADMAP.md](docs/ROADMAP.md). Já existe uma integração **experimental e sob demanda** com a API pública [Querido Diário](https://docs.queridodiario.ok.org.br/pt-br/latest/utilizando/api-publica.html), mas ela esteve indisponível nos testes de conexão. Ainda faltam validação independente, estabilidade de fontes e avaliação com usuários externos. O projeto pode solicitar apoio à manutenção open source nesta fase, sem alegar maturidade, escala ou adoção que ainda não foram demonstradas.
 
 ## Contribuições
 
