@@ -75,6 +75,17 @@ RESULTS = [
     "1 02 - 00106 JOAO LIMA ALVES 01/01/2000 40,00 27,00 30,00 97,00",
 ]
 
+JOINVILLE_ANNEX = [
+    "Pagina 1 de 30",
+    "MUNICIPIO DE EXEMPLO",
+    "ANEXO I - EDITAL DE HOMOLOGACAO DO RESULTADO FINAL E CLASSIFICACAO - Ampla Concorrencia",
+    "CONCURSO PUBLICO No 004/2026",
+    "0824 - PROFESSOR DE SERIES INICIAIS",
+    "Nome Inscricao Matematica Didatica Nota Final Classificacao",
+    "ANA PAULA SILVA 7290004535 20.00 10.00 4.00 79.00 1",
+    "MARIA DE SOUSA 7290009645 20.00 7.00 4.00 76.50 2",
+]
+
 PREVIOUS = [
     "DIARIO OFICIAL",
     "PORTARIA No 2.211, DE 19 DE JUNHO DE 2026",
@@ -129,6 +140,28 @@ class StructuredContextTests(unittest.TestCase):
                 result = infer_same_page_table(text, *locate(text, name))
                 self.assertEqual(result["act_type"], "resultado_homologacao")
                 self.assertEqual(result["act_indicator"], "resultado final")
+
+    def test_homologation_annex_name_first_scores_table(self):
+        text = "\n".join(JOINVILLE_ANNEX)
+        for name in ("ANA PAULA SILVA", "MARIA DE SOUSA"):
+            with self.subTest(name=name):
+                result = infer_same_page_table(text, *locate(text, name))
+                self.assertIsNotNone(result)
+                self.assertEqual(result["act_type"], "resultado_homologacao")
+                self.assertEqual(result["act_basis"],
+                                 "annex_homologated_named_candidate_scores_table")
+
+    def test_name_first_table_without_annex_header_abstains(self):
+        text = "\n".join(JOINVILLE_ANNEX[4:])
+        self.assertIsNone(infer_same_page_table(text, *locate(text)))
+
+    def test_name_first_table_without_registration_abstains(self):
+        rows = [
+            line.replace("ANA PAULA SILVA 7290004535", "ANA PAULA SILVA")
+            for line in JOINVILLE_ANNEX
+        ]
+        text = "\n".join(rows)
+        self.assertIsNone(infer_same_page_table(text, *locate(text)))
 
     def test_ranked_list_without_results_header_abstains(self):
         text = "\n".join(RESULTS[2:])
@@ -198,21 +231,23 @@ class StructuredContextTests(unittest.TestCase):
             write_lines_pdf(pdf, [
                 CONVO,
                 RESULTS,
+                JOINVILLE_ANNEX,
                 PREVIOUS,
                 NEXT,
             ])
             for name, page, expected in [
                 ("ANA PAULA SILVA", 1, "convocacao"),
                 ("MARIA DE SOUSA", 2, "resultado_homologacao"),
+                ("ANA PAULA SILVA", 3, "resultado_homologacao"),
             ]:
                 report = analyze_pdf(pdf, name)
                 match = next(m for m in report["matches"] if m["page_number"] == page)
                 self.assertEqual(match["act_type"], expected)
                 self.assertIn(page, report["structured_context_pages"])
             report = analyze_pdf(pdf, "ANA PAULA SILVA")
-            fourth = next(m for m in report["matches"] if m["page_number"] == 4)
-            self.assertEqual(fourth["act_type"], "nomeacao")
-            self.assertIn(4, report["structured_context_pages"])
+            fifth = next(m for m in report["matches"] if m["page_number"] == 5)
+            self.assertEqual(fifth["act_type"], "nomeacao")
+            self.assertIn(5, report["structured_context_pages"])
 
     def test_pdf_adapter_does_not_turn_exoneration_into_nomination(self):
         with TemporaryDirectory() as folder:
