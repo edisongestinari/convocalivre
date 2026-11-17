@@ -29,11 +29,13 @@ A coluna página é a **página física do PDF**, iniciando em 1.
 | Cajamar/SP | [Diário oficial 1694, 16/06/2026](https://cajamar.sp.gov.br/diariooficial/wp-content/uploads/sites/3/edicao-no-1694-2.pdf) | 2, 3 | Nomeação por portaria e controle negativo de licença-prêmio |
 | Pinhalzinho/SP | [Diário oficial 1449, 06/11/2026](https://www.pinhalzinho.sp.gov.br/public/admin/globalarq/diario-eletronico/diario/a3xsTARAcwZ2A232.pdf) | 3 | Nomeação por portaria em tabela |
 | Itaí/SP | [Diário oficial 1548, 13/11/2026](https://www.itai.sp.gov.br/public/admin/globalarq/diario-eletronico/diario/32Tx22AwRc3aAsZA.pdf) | 3 | Cinco nomeações próximas, na mesma página |
+| Fernão/SP | [Edital de convocação nº 14/2026](https://www.fernao.sp.gov.br/concurso/download/637/) e [homologação do processo seletivo](https://www.fernao.sp.gov.br/concurso/download/616/) | 1; 2 | Convocação e resultado final em tabela com duas seleções de candidatos |
+| Cajamar/SP (segunda edição) | [Diário oficial 1697, 19/06/2026](https://cajamar.sp.gov.br/diariooficial/wp-content/uploads/sites/3/edicao-1697-3.pdf) | 5 | Nomeação iniciada na página anterior, exoneração e licença funcional |
 | Cruzeiro do Oeste/PR | [Jornal de 05/11/2026](https://www.umuaramailustrado.com.br/edicoes/2026/novembro_2026/digital_05_11_2026.pdf) | 13 | Exclusão/desistência em duas colunas — caso de regressão já usado no desenvolvimento |
 
-**Composição:** 7 fontes, 13 ocorrências positivas (que incluem
+**Composição:** 10 arquivos PDF, 19 ocorrências positivas (que incluem
 dois casos de "indeterminado" porque licenças não fazem parte das quatro
-categorias), além de 4 sondagens negativas cruzadas entre documentos.
+categorias), além de 8 sondagens negativas cruzadas entre documentos.
 
 O caso de Cruzeiro do Oeste é um **caso de desenvolvimento já conhecido**,
 portanto não é independente e deve ser destacado ao interpretar os totais.
