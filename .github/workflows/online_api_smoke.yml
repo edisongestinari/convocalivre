@@ -1,0 +1,41 @@
+name: API online smoke test (non-personal)
+
+on:
+  pull_request:
+    paths:
+      - 'src/convocalivre/online_search.py'
+      - '.github/workflows/online_api_smoke.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Read-only provider reachability (non-personal phrase)
+        shell: bash
+        run: |
+          python - <<'PY'
+          from urllib.parse import urlencode
+          from urllib.request import Request, urlopen
+          url = "https://api.queridodiario.ok.org.br/gazettes?" + urlencode({
+              "territory_ids": "2700706",
+              "querystring": "orcamento",
+              "size": "1",
+              "number_of_excerpts": "1",
+              "excerpt_size": "120",
+          })
+          try:
+              with urlopen(Request(url, headers={"User-Agent":"ConvocaLivre-Smoke/0.5"}), timeout=12) as r:
+                  print("Provider HTTP status:", r.status)
+                  print("Response begins with:", r.read(20)[:1] == b"{")
+          except Exception as exc:
+              print("Provider unavailable during this run:", type(exc).__name__)
+              # External service failure is recorded, not a regression.
+          PY
