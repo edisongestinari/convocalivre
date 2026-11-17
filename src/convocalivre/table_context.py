@@ -168,10 +168,18 @@ def infer_table_act(
     if not confirmed:
         return None
     if "desistencia_exclusao" in confirmed:
-        # An exclusion plus incidental *single* references to a previous
-        # convocacao/nomeacao can describe the cancellation of that act.
-        # If another category has independent repeated evidence, abstain.
-        if len(confirmed) != 1:
+        # "aprovados" may appear in both the summary and the cancellation
+        # clause without signalling a positive RESULTADO/HOMOLOGACAO act.
+        # Only independent STRONG evidence of another act causes abstention.
+        competing_strong = any(
+            kind != "desistencia_exclusao"
+            and any(
+                _STRONG[kind].search(_normalize(cell))
+                for _, cell, _ in items
+            )
+            for kind, items in confirmed.items()
+        )
+        if competing_strong:
             return None
         kind = "desistencia_exclusao"
     elif len(confirmed) == 1:
