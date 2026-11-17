@@ -34,10 +34,14 @@ automaticamente como exclusão efetiva.
 
 ### 2. Homologação / classificação em anexo
 
-Exige **ANEXO I**, **RESULTADO FINAL ... PROCESSO SELETIVO**, cabeçalho
-de tabela com POS., INSCRIÇÃO, NOME e NOTA FINAL e linha iniciada por
-posição e número de inscrição. Sem esses indicadores não se presume
-homologação ou convocação; "aprovado" por si só não é suficiente.
+Exige **ANEXO I** e um dos dois formatos completos: (a) **RESULTADO
+FINAL ... PROCESSO SELETIVO**, cabeçalho com POS., INSCRIÇÃO, NOME e
+NOTA FINAL, e linha iniciada por posição e inscrição; ou (b) **ANEXO I —
+EDITAL DE HOMOLOGAÇÃO DO RESULTADO FINAL**, cabeçalho com NOME,
+INSCRIÇÃO, NOTA FINAL e CLASSIFICAÇÃO, e linha iniciada pelo nome seguido
+imediatamente de inscrição numérica. Esta segunda estrutura foi observada
+em Joinville/SC. Sem esses indicadores não se presume homologação ou
+convocação; "aprovado" por si só não é suficiente.
 
 ### 3. Portaria continuada na página seguinte
 
@@ -58,6 +62,8 @@ Quando a rotina reconhece um desses formatos:
   \`adjacent_page_unfinished_portaria_named_recipient\`;
 - act_indicator: palavra do comando;
 - act_context_lines: linhas usadas como apoio;
+- act_context_page_offset: 0 para evidências na mesma página do nome e -1
+  para as linhas da página física imediatamente anterior;
 - act_heading_excerpt: cabeçalho, sem trecho contendo dados pessoais;
 - requires_manual_review: sempre true;
 - structured_context_pages: páginas do PDF que receberam a inferência.
