@@ -141,8 +141,13 @@ class LocalMVPTests(unittest.TestCase):
             )
             without_progress = analyze_local_files([p], "Ana Paula Silva")
             for key in ("files_total", "files_analyzed", "files_failed",
-                        "files_with_name", "mention_count", "documents"):
+                        "files_with_name", "mention_count"):
                 self.assertEqual(with_progress[key], without_progress[key])
+            # Timestamps naturally differ between two separate invocations.
+            first = with_progress["documents"][0]["report"]
+            second = without_progress["documents"][0]["report"]
+            for key in ("match_count", "matches", "result", "act_type_counts"):
+                self.assertEqual(first[key], second[key])
             self.assertEqual(len(snapshots), 2)
 
     def test_max_batch_files_limit(self):
