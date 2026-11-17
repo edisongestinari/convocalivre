@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import sys
 
+from . import __version__
 from .core import analyze
 from .pdf import analyze_pdf
 from .diagnostics import diagnose_pdf
@@ -65,6 +66,7 @@ def main(argv: list[str] | None = None) -> int:
         epilog="Tambem disponivel: convocalivre gui | diagnose ARQUIVO.pdf | batch PASTA --name NOME",
 
     )
+    parser.add_argument("--version", action="version", version=f"ConvocaLivre {__version__}")
     parser.add_argument("file", help="Arquivo .txt UTF-8 ou PDF com texto pesquisavel")
     parser.add_argument("--name", required=True, help="Nome completo (nao transmitido)")
     parser.add_argument("--source-url", default="", help="Link fornecido pelo usuario, NAO verificado")
