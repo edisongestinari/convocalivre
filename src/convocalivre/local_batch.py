@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -40,8 +41,14 @@ def collect_files(inputs: list[str | Path], *, recursive: bool = False) -> list[
     return sorted(found.values(), key=lambda item: str(item).casefold())
 
 
-def analyze_local_files(files: list[str | Path], name: str) -> dict:
-    """Process an explicit local file set and isolate per-file failures."""
+def analyze_local_files(
+    files: list[str | Path],
+    name: str,
+    *,
+    on_progress: Callable[[int, int, str, str], None] | None = None,
+) -> dict:
+    """Process files with optional per-file progress (no estimated percentage)."""
+
     if not isinstance(name, str) or len(name.split()) < 2:
         raise ValueError("Informe um nome completo com ao menos duas partes.")
     if not files or len(files) > MAX_BATCH_FILES:
@@ -50,8 +57,10 @@ def analyze_local_files(files: list[str | Path], name: str) -> dict:
     mentions = 0
     files_with_names = 0
     failures = 0
-    for supplied in files:
+    for number, supplied in enumerate(files, start=1):
         path = Path(supplied)
+        if on_progress is not None:
+            on_progress(number, len(files), path.name, "start")
         item = {"file": str(path), "status": "error", "report": None}
         try:
             if path.is_symlink() or path.suffix.lower() not in ALLOWED_EXTENSIONS:
@@ -74,6 +83,8 @@ def analyze_local_files(files: list[str | Path], name: str) -> dict:
             item["message"] = "Nao foi possivel analisar este documento."
             failures += 1
         outputs.append(item)
+        if on_progress is not None:
+            on_progress(number, len(files), path.name, "done")
     return {
         "tool": "ConvocaLivre",
         "batch_version": "1",
