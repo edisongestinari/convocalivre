@@ -1,4 +1,4 @@
-# ConvocaLivre (protótipo 0.3.1)
+# ConvocaLivre (protótipo 0.3.2)
 
 **Uma ferramenta aberta para encontrar indícios verificáveis de convocações e outros atos relacionados a nomes em textos e PDFs pesquisáveis de diários oficiais brasileiros.**
 
