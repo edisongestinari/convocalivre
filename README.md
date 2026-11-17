@@ -72,6 +72,16 @@ positivos e falsos negativos por categoria, além de exemplos com divergência.
 Não representam precisão em documentos reais.** Consulte os critérios em [docs/CLASSIFICATION.md](docs/CLASSIFICATION.md)
 e as métricas observadas em [docs/BENCHMARK_RESULTS.md](docs/BENCHMARK_RESULTS.md).
 
+## Auditoria exploratória em publicações oficiais
+
+Há um avaliador separado para documentos externos de **sete fontes** e **13 ocorrências de referência**, com quatro verificações negativas cruzadas. A seleção é manual e não aleatória. Os nomes não aparecem em claro no repositório nem nos relatórios; hashes são apenas pseudonimização, não anonimização.
+
+O comando abaixo baixa os documentos publicamente acessíveis apenas durante a execução e produz contagens agregadas de TP/FP/FN por tipo, além de distinguir falhas de conexão de nomes não encontrados:
+
+    python -m convocalivre.external_pdf_audit tests/fixtures/public_pdf_cases.json --output auditoria_publica.json
+
+**Não compare os números com os 39 casos sintéticos como se fossem estimativas populacionais.** Consulte [o protocolo, as fontes e os limites](docs/PUBLIC_PDF_AUDIT.md).
+
 ## Testes
 
 ```bash
