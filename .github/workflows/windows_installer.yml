@@ -54,8 +54,8 @@ jobs:
       - name: Smoke test built executable
         shell: pwsh
         run: |
-          & ".\dist\ConvocaLivre\ConvocaLivre.exe" --smoke-test
-          if ($LASTEXITCODE -ne 0) { throw "Executable smoke test failed" }
+          $process = Start-Process -FilePath ".\dist\ConvocaLivre\ConvocaLivre.exe" -ArgumentList "--smoke-test" -PassThru -Wait
+          if ($process.ExitCode -ne 0) { throw "Executable smoke test failed with exit code $($process.ExitCode)" }
 
       - name: Install Inno Setup
         shell: pwsh
