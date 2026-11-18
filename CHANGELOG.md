@@ -1,5 +1,16 @@
 # Histórico de versões
 
+## 0.6.0 — Evidências na interface
+
+- Apresenta painel local para cada ocorrência com tipo indicativo,
+  indicador textual, motivo da inferência, cabeçalho e linhas de apoio.
+- Distingue linhas da página anterior em portarias continuadas.
+- Mostra avisos de texto não extraível e layout reconstruído.
+- Evita informar “nome não encontrado” como prova de ausência:
+  a pesquisa limitada ao texto extraível é explicitada.
+- A interface não envia evidências à internet, mantém exportação local
+  e exige revisão humana.
+
 ## 0.5.2 — Proteção de conexões remotas
 
 - Fixa um IP público validado pelo DNS ao abrir o socket TLS do PDF,

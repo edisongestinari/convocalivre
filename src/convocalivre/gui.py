@@ -14,6 +14,7 @@ from threading import Thread
 import webbrowser
 
 from .local_batch import analyze_local_files, collect_files
+from .gui_evidence import summarize_match, summarize_empty_report
 
 
 LABELS = {
@@ -33,14 +34,15 @@ def launch() -> None:
         def __init__(self, root):
             self.root = root
             self.root.title("ConvocaLivre — Consulta local de publicacoes")
-            self.root.geometry("1050x670")
-            self.root.minsize(820, 530)
+            self.root.geometry("1100x760")
+            self.root.minsize(860, 640)
             self.name = tk.StringVar()
             self.status = tk.StringVar(value="Selecione um ou mais arquivos PDF ou TXT.")
             self.search_activity = tk.StringVar(value="")
             self.paths: list[Path] = []
             self.scan_result: dict | None = None
             self.row_paths: dict[str, tuple[Path, int | None]] = {}
+            self.row_evidence: dict[str, str] = {}
             self.messages: Queue = Queue()
             self.running = False
 
@@ -135,6 +137,22 @@ def launch() -> None:
             self.tree.pack(side="left", fill="both", expand=True)
             yscroll.pack(side="right", fill="y")
             self.tree.bind("<Double-1>", lambda _event: self.open_selected())
+            self.tree.bind("<<TreeviewSelect>>", lambda _event: self.show_evidence())
+
+            ttk.Label(
+                outer, text="Evidências e justificativa (revisão humana obrigatória):"
+            ).pack(anchor="w", pady=(9, 4))
+            self.evidence_text = tk.Text(
+                outer, height=8, wrap="word", font=("Segoe UI", 10),
+                padx=8, pady=7, relief="solid", borderwidth=1,
+            )
+            self.evidence_text.pack(fill="x")
+            self.evidence_text.configure(state="disabled")
+            self.set_evidence(
+                "Selecione uma ocorrência para ver os indicadores, a regra "
+                "utilizada e os avisos de extração. A classificação não confirma "
+                "convocação ou nomeação."
+            )
 
             actions = ttk.Frame(outer)
             actions.pack(fill="x", pady=(9, 2))
@@ -189,6 +207,8 @@ def launch() -> None:
             self.paths = []
             self.scan_result = None
             self.row_paths = {}
+            self.row_evidence = {}
+            self.set_evidence("Nenhum resultado selecionado.")
             self.export_button.state(["disabled"])
             for item in self.tree.get_children():
                 self.tree.delete(item)
@@ -242,6 +262,8 @@ def launch() -> None:
             for item in self.tree.get_children():
                 self.tree.delete(item)
             self.row_paths = {}
+            self.row_evidence = {}
+            self.set_evidence("Pesquisa em andamento; as evidências aparecerão ao finalizar.")
 
             def worker():
                 def on_progress(index, total, filename, phase):
@@ -296,6 +318,10 @@ def launch() -> None:
             self.name_entry.state(["!disabled"])
             if outcome != "ok":
                 self.status.set("A consulta falhou. Verifique os arquivos.")
+                self.set_evidence(
+                    "Erro durante a análise. Nenhuma conclusão pode ser "
+                    "tirada sobre a presença do nome."
+                )
                 return
             self.scan_result = report
             self.export_button.state(["!disabled"])
@@ -308,11 +334,18 @@ def launch() -> None:
             for document in report["documents"]:
                 file = Path(document["file"])
                 if document["status"] != "analyzed":
-                    self.append(file, None, "Falha na analise", "")
+                    self.append(
+                        file, None, "Falha na análise", "",
+                        summarize_empty_report({}, "error")
+                    )
                     continue
-                matches = document["report"]["matches"]
+                report = document["report"]
+                matches = report["matches"]
                 if not matches:
-                    self.append(file, None, "Nome nao encontrado", "")
+                    self.append(
+                        file, None, "Sem correspondência no texto extraível", "",
+                        summarize_empty_report(report, "analyzed")
+                    )
                     continue
                 for match in matches:
                     self.append(
@@ -320,15 +353,36 @@ def launch() -> None:
                         match.get("page_number"),
                         LABELS.get(match["act_type"], "Indeterminado"),
                         match.get("act_indicator") or "",
+                        summarize_match(match, report),
                     )
+            if self.tree.get_children():
+                first = self.tree.get_children()[0]
+                self.tree.selection_set(first)
+                self.show_evidence()
 
-        def append(self, file, page, category, indicator):
+        def append(self, file, page, category, indicator, evidence):
             identity = self.tree.insert(
                 "", "end",
                 values=(file.name, page if page is not None else "—",
                         category, indicator),
             )
             self.row_paths[identity] = (file, page)
+            self.row_evidence[identity] = evidence
+
+        def set_evidence(self, text):
+            self.evidence_text.configure(state="normal")
+            self.evidence_text.delete("1.0", "end")
+            self.evidence_text.insert("1.0", text)
+            self.evidence_text.configure(state="disabled")
+
+        def show_evidence(self):
+            selected = self.tree.selection()
+            if selected:
+                self.set_evidence(
+                    self.row_evidence.get(
+                        selected[0], "Nenhuma evidência disponível."
+                    )
+                )
 
         def open_selected(self):
             selection = self.tree.selection()
