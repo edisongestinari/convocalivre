@@ -1,5 +1,18 @@
 # Histórico de versões
 
+## 0.5.2 — Proteção de conexões remotas
+
+- Fixa um IP público validado pelo DNS ao abrir o socket TLS do PDF,
+  evitando uma segunda resolução que permitiria DNS rebinding.
+- Rejeita IP literal e conjuntos de respostas DNS que incluam redes
+  privadas, reservadas ou locais.
+- Mantém certificado TLS verificado para o domínio original e proíbe
+  redirecionamentos automáticos.
+- Inclui testes determinísticos de DNS privado, mistura de endereços
+  e validação do destino efetivo da conexão.
+- Mantém a classificação de atos inalterada. O parser PDF ainda exige
+  cautela com documentos não confiáveis.
+
 ## 0.5.1 — Consulta de PDF público direto, sem API
 
 - Inclui o botão **Analisar PDF por link (sem API)** na janela de
