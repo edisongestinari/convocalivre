@@ -26,11 +26,13 @@ negação de serviço, redirecionamentos inesperados ou extração de dados
 sensíveis por componentes externos. Não execute com privilégios de
 administrador e use apenas fontes que você confie.
 
-A opção de download direto valida a URL fornecida, mas a verificação de
-hosts via DNS ainda requer uma revisão de segurança específica para
-cenários de DNS rebinding e de redes privadas. Até que isso seja
-endereçado, **não use a função em redes sensíveis ou ambientes de
-servidor expostos a usuários não confiáveis**.
+Na versão 0.5.2, a consulta direta de PDF bloqueia endereços IP literais,
+verifica os endereços resolvidos pelo DNS e **fixa o IP público escolhido
+na conexão TLS**, mantendo SNI e validação de certificado para o domínio
+original. Redirecionamentos são bloqueados. Isso reduz riscos de acesso
+a redes internas e DNS rebinding, mas **não garante segurança total**:
+o parser de PDFs ainda processa documentos não confiáveis. Não execute
+o aplicativo com privilégios elevados nem em servidores expostos.
 
 ## Como reportar
 
