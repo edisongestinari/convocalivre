@@ -16,13 +16,13 @@ DefaultDirName={localappdata}\Programs\ConvocaLivre
 DefaultGroupName=ConvocaLivre
 DisableProgramGroupPage=yes
 PrivilegesRequired=lowest
-OutputDir=dist_installer
+OutputDir=..\dist_installer
 OutputBaseFilename=ConvocaLivre_Setup_0_6_1
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern
 UninstallDisplayIcon={app}\{#MyAppExeName}
-LicenseFile=LICENSE
+LicenseFile=..\LICENSE
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 
@@ -33,9 +33,9 @@ Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortugue
 Name: "desktopicon"; Description: "Criar atalho na area de trabalho"; GroupDescription: "Atalhos:"; Flags: unchecked
 
 [Files]
-Source: "dist\ConvocaLivre\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "LICENSE"; DestDir: "{app}"; Flags: ignoreversion
-Source: "README.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\dist\ConvocaLivre\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\LICENSE"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\README.md"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{autoprograms}\ConvocaLivre"; Filename: "{app}\{#MyAppExeName}"
