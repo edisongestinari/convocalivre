@@ -35,7 +35,7 @@
 ## Instalador Windows — versão 0.6.1
 - [x] Gerar workflow PyInstaller + Inno Setup, permissões de usuário e SHA-256
 - [x] Acrescentar smoke test sem interface e instruções de download
-- [ ] Confirmar execução bem-sucedida do build Windows e artefato no GitHub
+- [x] Confirmar execução bem-sucedida do build Windows e artefato no GitHub ([GitHub Actions 44222710341](https://github.com/edisongestinari/convocalivre/actions/runs/44222710341))
 - [ ] Testar instalação, abertura, busca e desinstalação em Windows real
 - [ ] Assinatura de código antes de distribuição pública ampla
 
