@@ -1,10 +1,18 @@
-# ConvocaLivre 0.6.0 — MVP local + consulta online experimental
+# ConvocaLivre 0.6.1 — MVP local + consulta online experimental
 
 **Software cívico open source para pesquisar nomes em diários oficiais brasileiros e apresentar evidências de possíveis atos administrativos — sem confundir menção com nomeação confirmada.**
 
 **Projeto em pré-alfa:** [impacto e evidências](docs/IMPACTO_E_EVIDENCIAS.md) · [demonstração reproduzível](docs/DEMONSTRACAO.md) · [roteiro de candidatura Codex for Open Source](docs/CANDIDATURA_CODEX_FOR_OSS.md) · [limitações](docs/ROADMAP.md)
 
 > ⚠️ Protótipo inicial. Consultas locais continuam offline; a nova consulta à API do Querido Diário é opcional, realizada somente após consentimento e depende da disponibilidade do serviço. NÃO monitora sites automaticamente, NÃO envia alertas, NÃO comprova nomeação, nem substitui verificação humana. O arquivo de exemplo é inteiramente fictício. PDFs digitalizados sem texto ainda não são reconhecidos.
+
+## Instalar no Windows sem Python (0.6.1, teste)
+
+O projeto inclui uma receita de compilação de um **instalador Windows**,
+com atalhos e remoção pelo sistema. Como não há assinatura digital,
+a distribuição ainda é destinada a testes controlados. Consulte
+[INSTALACAO_WINDOWS.md](docs/INSTALACAO_WINDOWS.md) para localizar o
+artefato, verificar SHA-256 e conhecer as limitações.
 
 ## Interface gráfica e pesquisa local (MVP)
 

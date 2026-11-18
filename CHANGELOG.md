@@ -1,5 +1,14 @@
 # Histórico de versões
 
+## 0.6.1 — Pacote Windows reproduzível
+
+- Receita CI em GitHub Actions para compilação Windows com PyInstaller.
+- Instalador por usuário (Inno Setup), sem necessidade de Python no PC.
+- Atalhos de menu Iniciar e opção de atalho na área de trabalho.
+- Smoke test do executável, testes Python e SHA-256 do instalador.
+- Artefato inicial sem assinatura digital; requer validação de instalação
+  e desinstalação no Windows real antes de ser indicado como estável.
+
 ## 0.6.0 — Evidências na interface
 
 - Apresenta painel local para cada ocorrência com tipo indicativo,

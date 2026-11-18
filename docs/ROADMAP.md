@@ -32,6 +32,13 @@
 - [ ] Avaliar outras fontes, intervalos de datas, cobertura e deduplicação
 - [ ] Criar monitoramento periódico apenas com consentimento e controles
 
+## Instalador Windows — versão 0.6.1
+- [x] Gerar workflow PyInstaller + Inno Setup, permissões de usuário e SHA-256
+- [x] Acrescentar smoke test sem interface e instruções de download
+- [ ] Confirmar execução bem-sucedida do build Windows e artefato no GitHub
+- [ ] Testar instalação, abertura, busca e desinstalação em Windows real
+- [ ] Assinatura de código antes de distribuição pública ampla
+
 ## Antes de buscar usuários
 - [ ] Fazer avaliação independente com publicações públicas e casos inéditos, sem expor dados privados
 - [x] Medir FP/FN em exemplos sintéticos de desenvolvimento, documentando limitações

@@ -1,0 +1,90 @@
+name: Windows installer (unsigned)
+
+on:
+  pull_request:
+    paths:
+      - 'packaging/**'
+      - '.github/workflows/windows_installer.yml'
+      - 'pyproject.toml'
+  push:
+    branches: [main]
+    tags: ['v*']
+    paths:
+      - 'packaging/**'
+      - '.github/workflows/windows_installer.yml'
+      - 'pyproject.toml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    name: Build Windows installer
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install app and packaging tools
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install . "pyinstaller>=6.12,<7"
+
+      - name: Run Python tests
+        shell: pwsh
+        run: |
+          python -m unittest discover -s tests -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Build portable Windows executable
+        shell: pwsh
+        run: |
+          python -m PyInstaller --noconfirm --clean --onedir --windowed --name ConvocaLivre --collect-all pypdf --paths src packaging/windows_launcher.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Smoke test built executable
+        shell: pwsh
+        run: |
+          $process = Start-Process -FilePath ".\dist\ConvocaLivre\ConvocaLivre.exe" -ArgumentList "--smoke-test" -PassThru -Wait
+          if ($process.ExitCode -ne 0) { throw "Executable smoke test failed with exit code $($process.ExitCode)" }
+
+      - name: Install Inno Setup
+        shell: pwsh
+        run: |
+          choco install innosetup --yes --no-progress
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Build per-user Windows installer
+        shell: pwsh
+        run: |
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          if (!(Test-Path $iscc)) { throw "Inno Setup compiler not found: $iscc" }
+          & $iscc ".\packaging\ConvocaLivre.iss"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Checksum and generated artifact
+        shell: pwsh
+        run: |
+          $installer = Get-Item ".\dist_installer\ConvocaLivre_Setup_0_6_1.exe"
+          $hash = (Get-FileHash -Path $installer.FullName -Algorithm SHA256).Hash.ToLower()
+          "$hash  $($installer.Name)" | Set-Content -Path ".\dist_installer\SHA256SUMS.txt" -Encoding ascii
+          Write-Host "Installer checksum SHA-256: $hash"
+
+      - name: Upload installer and checksum (unsigned)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ConvocaLivre-Windows-Setup-0.6.1-UNSIGNED
+          path: |
+            dist_installer/ConvocaLivre_Setup_0_6_1.exe
+            dist_installer/SHA256SUMS.txt
+          retention-days: 30
+          if-no-files-found: error
