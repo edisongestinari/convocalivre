@@ -6,6 +6,14 @@
 
 > ⚠️ Protótipo inicial. Consultas locais continuam offline; a nova consulta à API do Querido Diário é opcional, realizada somente após consentimento e depende da disponibilidade do serviço. NÃO monitora sites automaticamente, NÃO envia alertas, NÃO comprova nomeação, nem substitui verificação humana. O arquivo de exemplo é inteiramente fictício. PDFs digitalizados sem texto ainda não são reconhecidos.
 
+## Instalar no Windows sem Python (0.6.1, teste)
+
+O projeto inclui uma receita de compilação de um **instalador Windows**,
+com atalhos e remoção pelo sistema. Como não há assinatura digital,
+a distribuição ainda é destinada a testes controlados. Consulte
+[INSTALACAO_WINDOWS.md](docs/INSTALACAO_WINDOWS.md) para localizar o
+artefato, verificar SHA-256 e conhecer as limitações.
+
 ## Interface gráfica e pesquisa local (MVP)
 
 A versão 0.4.0 permite ao usuário comum consultar uma pasta de PDFs e
