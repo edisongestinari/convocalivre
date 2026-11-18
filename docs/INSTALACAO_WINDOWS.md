@@ -5,7 +5,7 @@ O usuário não precisa instalar Python ou executar comandos para abrir o progra
 
 ## Baixar o instalador de teste
 
-1. Abra https://github.com/edisongestinari/convocalivre/actions/workflows/windows_installer.yml
+1. Abra a [execução validada do instalador 0.6.1](https://github.com/edisongestinari/convocalivre/actions/runs/44222710341). Para versões futuras, use https://github.com/edisongestinari/convocalivre/actions/workflows/windows_installer.yml
 2. Selecione a execução recente com **Build Windows installer** concluído com sucesso.
 3. Em **Artifacts**, baixe o arquivo **ConvocaLivre-Windows-Setup-0.6.1-UNSIGNED**.
 4. Extraia o ZIP e confirme que contém:
