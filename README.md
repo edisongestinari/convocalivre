@@ -1,4 +1,4 @@
-# ConvocaLivre 0.5.1 — MVP local + consulta online experimental
+# ConvocaLivre 0.6.0 — MVP local + consulta online experimental
 
 **Software cívico open source para pesquisar nomes em diários oficiais brasileiros e apresentar evidências de possíveis atos administrativos — sem confundir menção com nomeação confirmada.**
 
