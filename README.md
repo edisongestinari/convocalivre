@@ -27,8 +27,10 @@ Para uma demonstração reproduzível com documentos fictícios, consulte
 Na janela, escolha o nome completo e os PDFs/TXT, clique em
 **Buscar nome**. Enquanto a ferramenta pesquisa, a mensagem **Procurando...**
 e uma barra animada indicam atividade; o arquivo corrente é exibido.
-Ao concluir, veja as hipóteses na tabela e abra o PDF original
-na página indicada. É possível exportar o resultado para JSON local.
+Ao concluir, selecione uma ocorrência na tabela para visualizar
+**evidências e justificativas**: indicador textual, cabeçalho, regra
+utilizada e avisos de extração. Abra o PDF original na página indicada.
+A ocorrência é sempre indicativa: a interface não confirma atos jurídicos. É possível exportar o resultado para JSON local.
 
 ### Buscar em uma pasta pelo PowerShell
 
